@@ -48,8 +48,8 @@ const PREGUNTAS = [
     a: 'Descarga la app, crea tu cuenta y obtén tu número de tarjeta digital (formato ENP-XXXX-XXXX). Cada factura de combustible que subas y sea aprobada suma galones a tu cuenta.',
   },
   {
-    q: '¿Cuánto vale cada punto?',
-    a: 'Cada punto acumulado equivale a L 0.15 al momento de redimir. El valor se calcula automáticamente sobre tus galones aprobados.',
+    q: '¿Cómo se calculan mis puntos?',
+    a: 'Ganas 1 punto por cada galón de combustible que cargues y sea aprobado. Así de simple: mientras más recorres, más puntos acumulas.',
   },
   {
     q: '¿En qué estaciones puedo usar mi tarjeta?',
@@ -102,7 +102,7 @@ export default function Landing() {
           </div>
 
           {/* Odómetro de red */}
-          <div data-reveal className="grid grid-cols-3 gap-6 mt-16 max-w-xl border-t border-white/10 pt-8">
+          <div data-reveal className="grid grid-cols-2 gap-6 mt-16 max-w-sm border-t border-white/10 pt-8">
             <div>
               <p className="text-3xl text-white font-mono"><OdometroDigit target={35} /></p>
               <p className="text-white/50 text-xs uppercase tracking-wide mt-1">Estaciones</p>
@@ -110,10 +110,6 @@ export default function Landing() {
             <div>
               <p className="text-3xl text-white font-mono"><OdometroDigit target={13} /></p>
               <p className="text-white/50 text-xs uppercase tracking-wide mt-1">Ciudades</p>
-            </div>
-            <div>
-              <p className="text-3xl text-white font-mono">L 0.15</p>
-              <p className="text-white/50 text-xs uppercase tracking-wide mt-1">Por punto</p>
             </div>
           </div>
         </div>
