@@ -28,6 +28,7 @@ export default {
       },
       backgroundImage: {
         'road-lines': 'repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(242,183,5,0.6) 40px, rgba(242,183,5,0.6) 72px)',
+        'verde-metal': 'linear-gradient(120deg, #3E7A1D 0%, #5BAE2F 18%, #9AE06A 36%, #5BAE2F 52%, #326318 64%, #5BAE2F 80%, #86D454 100%)',
       },
       keyframes: {
         drive: {
@@ -42,11 +43,16 @@ export default {
           '0%, 100%': { transform: 'scale(1)', opacity: '1' },
           '50%': { transform: 'scale(1.4)', opacity: '0.7' },
         },
+        shine: {
+          '0%': { transform: 'translateX(-120%) skewX(-15deg)' },
+          '100%': { transform: 'translateX(220%) skewX(-15deg)' },
+        },
       },
       animation: {
         drive: 'drive 6s linear infinite',
         rise: 'rise 0.7s ease-out forwards',
         pulseDot: 'pulseDot 2s ease-in-out infinite',
+        shine: 'shine 3.5s ease-in-out infinite',
       },
     },
   },
