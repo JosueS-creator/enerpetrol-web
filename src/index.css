@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F1F2EE;
+  color: #0F2A4A;
+}
+
+::selection {
+  background-color: #5BAE2F;
+  color: white;
+}
+
+/* Reveal-on-scroll utility */
+.reveal {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: rise 0.7s ease-out forwards;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.is-visible {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-drive, .animate-pulseDot {
+    animation: none !important;
+  }
+}
+
+/* Custom scrollbar for admin tables */
+.thin-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: #2A507A;
+  border-radius: 4px;
+}
