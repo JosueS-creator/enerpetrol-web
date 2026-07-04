@@ -235,7 +235,7 @@ export default function Facturas() {
             <button
               type="submit"
               disabled={procesando}
-              className="w-full bg-verde hover:bg-verde-light disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
+              className="w-full bg-verde-metal hover:brightness-110 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
             >
               {procesando ? 'Aprobando…' : 'Aprobar y acreditar galones'}
             </button>

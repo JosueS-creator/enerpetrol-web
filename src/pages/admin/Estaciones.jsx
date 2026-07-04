@@ -87,7 +87,7 @@ export default function Estaciones() {
         action={
           <button
             onClick={() => setModal({ modo: 'crear', datos: VACIA })}
-            className="flex items-center gap-2 bg-verde hover:bg-verde-light text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+            className="flex items-center gap-2 bg-verde-metal hover:brightness-110 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
           >
             <Plus size={16} /> Nueva estación
           </button>
@@ -245,7 +245,7 @@ export default function Estaciones() {
             <button
               type="submit"
               disabled={guardando}
-              className="w-full bg-verde hover:bg-verde-light disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
+              className="w-full bg-verde-metal hover:brightness-110 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
             >
               {guardando ? 'Guardando…' : 'Guardar estación'}
             </button>

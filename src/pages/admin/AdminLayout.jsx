@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { Fuel, LayoutDashboard, MapPin, Users, Receipt, BarChart3, LogOut } from 'lucide-react'
+import { LayoutDashboard, MapPin, Users, Receipt, BarChart3, LogOut } from 'lucide-react'
+import LogoMark from '../../components/LogoMark'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../lib/useAuth'
 
@@ -24,7 +25,7 @@ export default function AdminLayout() {
     <div className="min-h-screen bg-concrete flex">
       <aside className="w-64 bg-navy-ink flex flex-col shrink-0">
         <div className="flex items-center gap-2 text-white font-display text-lg px-6 py-6 border-b border-white/10">
-          <Fuel size={20} className="text-verde" />
+          <LogoMark size={20} />
           ENERPETROL
         </div>
 
@@ -36,7 +37,7 @@ export default function AdminLayout() {
               end={end}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  isActive ? 'bg-verde text-white' : 'text-white/60 hover:bg-white/5 hover:text-white'
+                  isActive ? 'bg-verde-metal text-white' : 'text-white/60 hover:bg-white/5 hover:text-white'
                 }`
               }
             >

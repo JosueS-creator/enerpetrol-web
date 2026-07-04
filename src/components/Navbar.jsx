@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Fuel, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
+import LogoMark from './LogoMark'
 
 const LINKS = [
   { href: '#app', label: 'La app' },
@@ -26,7 +27,7 @@ export default function Navbar() {
     >
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
         <a href="#top" className="flex items-center gap-2 text-white font-display text-xl tracking-wide">
-          <Fuel size={22} className="text-verde" strokeWidth={2.5} />
+          <LogoMark size={22} />
           ENERPETROL
         </a>
 
@@ -38,7 +39,7 @@ export default function Navbar() {
           ))}
           <a
             href="#app"
-            className="bg-verde hover:bg-verde-light text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors"
+            className="bg-verde-metal hover:brightness-110 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors"
           >
             Descargar app
           </a>
@@ -59,7 +60,7 @@ export default function Navbar() {
           <a
             href="#app"
             onClick={() => setOpen(false)}
-            className="bg-verde text-white text-sm font-semibold px-5 py-2.5 rounded-full text-center"
+            className="bg-verde-metal text-white text-sm font-semibold px-5 py-2.5 rounded-full text-center"
           >
             Descargar app
           </a>

@@ -1,5 +1,5 @@
-import { Fuel } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import LogoMark from './LogoMark'
 
 export default function Footer() {
   return (
@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between gap-8">
         <div>
           <div className="flex items-center gap-2 text-white font-display text-lg mb-2">
-            <Fuel size={18} className="text-verde" />
+            <LogoMark size={18} />
             ENERPETROL
           </div>
           <p className="text-sm max-w-xs">

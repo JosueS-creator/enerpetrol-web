@@ -176,7 +176,7 @@ export default function Usuarios() {
             <button
               type="submit"
               disabled={guardando}
-              className="w-full bg-verde hover:bg-verde-light disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
+              className="w-full bg-verde-metal hover:brightness-110 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
             >
               {guardando ? 'Guardando…' : 'Guardar cambios'}
             </button>

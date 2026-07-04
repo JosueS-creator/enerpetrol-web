@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Fuel, Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
+import LogoMark from '../components/LogoMark'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/useAuth'
 
@@ -34,7 +35,7 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-navy-ink flex items-center justify-center px-6">
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-2 justify-center text-white font-display text-xl mb-8">
-          <Fuel size={22} className="text-verde" />
+          <LogoMark size={22} />
           ENERPETROL <span className="text-white/40 font-body text-sm font-normal">/ admin</span>
         </div>
 
@@ -74,7 +75,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-verde hover:bg-verde-light disabled:opacity-60 text-white font-semibold py-3 rounded-lg mt-4 transition-colors"
+            className="w-full bg-verde-metal hover:brightness-110 disabled:opacity-60 text-white font-semibold py-3 rounded-lg mt-4 transition-colors"
           >
             {submitting ? 'Ingresando…' : 'Ingresar'}
           </button>

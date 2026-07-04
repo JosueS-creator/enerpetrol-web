@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import OdometroDigit from '../components/OdometroDigit'
 import RutaCiudades from '../components/RutaCiudades'
+import LogoMark from '../components/LogoMark'
 import { useReveal } from '../lib/useReveal'
 
 const APP_URL = 'https://enerpetrol-app-git-main-enerpetrol.vercel.app'
@@ -87,7 +88,7 @@ export default function Landing() {
                 href={APP_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="bg-verde hover:bg-verde-light text-white font-semibold px-7 py-3.5 rounded-full transition-colors"
+                className="bg-verde-metal hover:brightness-110 text-white font-semibold px-7 py-3.5 rounded-full transition-colors"
               >
                 Abrir la app Enerpetrol
               </a>
@@ -155,7 +156,7 @@ export default function Landing() {
             <div className="rounded-[1.5rem] bg-gradient-to-br from-navy-card to-navy-ink p-6 aspect-[9/16] flex flex-col justify-between border border-white/10">
               <div>
                 <div className="flex items-center gap-2 text-white/80 text-xs font-mono uppercase tracking-widest">
-                  <Fuel size={14} className="text-verde" /> Enerpetrol
+                  <LogoMark size={14} badgePadding="p-0.5" /> Enerpetrol
                 </div>
                 <p className="text-white/50 text-[11px] mt-6">Tarjeta digital</p>
                 <p className="text-white font-mono text-lg tracking-wider mt-1">ENP-4471-8823</p>
@@ -220,9 +221,13 @@ export default function Landing() {
       </section>
 
       {/* CTA FINAL */}
-      <section className="bg-verde">
-        <div className="max-w-4xl mx-auto px-6 py-20 text-center">
-          <h2 className="font-display text-4xl text-white mb-5">Tu próximo tanque puede valerte puntos</h2>
+      <section className="relative bg-verde-metal overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="absolute inset-y-0 -left-1/4 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-shine pointer-events-none"
+        />
+        <div className="relative max-w-4xl mx-auto px-6 py-20 text-center">
+          <h2 className="font-display text-4xl text-white mb-5 drop-shadow-sm">Tu próximo tanque puede valerte puntos</h2>
           <a
             href={APP_URL}
             target="_blank"
