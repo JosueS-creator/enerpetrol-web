@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { Plus, Pencil, Trash2, Search } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { PageHeader, Modal, Badge } from '../../components/AdminUI'
-import { CIUDADES } from '../../lib/constants'
+import { CIUDADES, DEPARTAMENTOS } from '../../lib/constants'
 
-const VACIA = { nombre: '', direccion: '', ciudad: CIUDADES[0], lat: '', lng: '', descuento: 1, activa: true }
+const VACIA = { nombre: '', direccion: '', departamento: DEPARTAMENTOS[0], ciudad: '', descuento: 1, activa: true, lat: '', lng: '' }
 
 export default function Estaciones() {
   const [estaciones, setEstaciones] = useState([])
@@ -29,7 +29,8 @@ export default function Estaciones() {
   const filtradas = estaciones.filter(
     (e) =>
       e.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-      e.ciudad.toLowerCase().includes(busqueda.toLowerCase())
+      e.ciudad.toLowerCase().includes(busqueda.toLowerCase()) ||
+      (e.departamento || '').toLowerCase().includes(busqueda.toLowerCase())
   )
 
   const guardar = async (e) => {
@@ -39,7 +40,8 @@ export default function Estaciones() {
     const payload = {
       nombre: modal.datos.nombre,
       direccion: modal.datos.direccion || null,
-      ciudad: modal.datos.ciudad,
+      departamento: modal.datos.departamento || null,
+      ciudad: modal.datos.ciudad.trim(),
       lat: parseFloat(modal.datos.lat) || 0,
       lng: parseFloat(modal.datos.lng) || 0,
       descuento: parseFloat(modal.datos.descuento) || 0,
@@ -112,6 +114,7 @@ export default function Estaciones() {
             <thead>
               <tr className="text-left text-navy/40 text-xs uppercase tracking-wide border-b border-navy/5">
                 <th className="px-6 py-3 font-medium">Estación</th>
+                <th className="px-6 py-3 font-medium">Departamento</th>
                 <th className="px-6 py-3 font-medium">Ciudad</th>
                 <th className="px-6 py-3 font-medium">Descuento</th>
                 <th className="px-6 py-3 font-medium">Estado</th>
@@ -126,6 +129,7 @@ export default function Estaciones() {
                       <p className="text-navy font-medium">{e.nombre}</p>
                       {e.direccion && <p className="text-navy/40 text-xs">{e.direccion}</p>}
                     </td>
+                    <td className="px-6 py-3.5 text-navy/70">{e.departamento || '—'}</td>
                     <td className="px-6 py-3.5 text-navy/70">{e.ciudad}</td>
                     <td className="px-6 py-3.5 font-mono text-navy/70">{e.descuento}</td>
                     <td className="px-6 py-3.5">
@@ -155,7 +159,7 @@ export default function Estaciones() {
                 ))}
               {!loading && filtradas.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-10 text-center text-navy/40">
+                  <td colSpan={6} className="px-6 py-10 text-center text-navy/40">
                     No se encontraron estaciones.
                   </td>
                 </tr>
@@ -187,27 +191,44 @@ export default function Estaciones() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-navy/60 text-xs uppercase tracking-wide mb-1.5">Ciudad</label>
+                <label className="block text-navy/60 text-xs uppercase tracking-wide mb-1.5">Departamento</label>
                 <select
-                  value={modal.datos.ciudad}
-                  onChange={(e) => setModal({ ...modal, datos: { ...modal.datos, ciudad: e.target.value } })}
+                  value={modal.datos.departamento || ''}
+                  onChange={(e) => setModal({ ...modal, datos: { ...modal.datos, departamento: e.target.value } })}
                   className="w-full border border-navy/10 rounded-lg px-3 py-2.5 outline-none focus:border-verde text-sm bg-white"
                 >
-                  {CIUDADES.map((c) => (
-                    <option key={c} value={c}>{c}</option>
+                  {DEPARTAMENTOS.map((d) => (
+                    <option key={d} value={d}>{d}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-navy/60 text-xs uppercase tracking-wide mb-1.5">Descuento</label>
+                <label className="block text-navy/60 text-xs uppercase tracking-wide mb-1.5">Ciudad</label>
                 <input
-                  type="number"
-                  step="0.01"
-                  value={modal.datos.descuento}
-                  onChange={(e) => setModal({ ...modal, datos: { ...modal.datos, descuento: e.target.value } })}
+                  required
+                  list="lista-ciudades"
+                  value={modal.datos.ciudad}
+                  onChange={(e) => setModal({ ...modal, datos: { ...modal.datos, ciudad: e.target.value } })}
+                  placeholder="Escribe o elige una ciudad"
                   className="w-full border border-navy/10 rounded-lg px-3 py-2.5 outline-none focus:border-verde text-sm"
                 />
+                <datalist id="lista-ciudades">
+                  {CIUDADES.map((c) => (
+                    <option key={c} value={c} />
+                  ))}
+                </datalist>
+                <p className="text-navy/40 text-xs mt-1.5">Elige una sugerida o escribe una ciudad nueva.</p>
               </div>
+            </div>
+            <div>
+              <label className="block text-navy/60 text-xs uppercase tracking-wide mb-1.5">Descuento</label>
+              <input
+                type="number"
+                step="0.01"
+                value={modal.datos.descuento}
+                onChange={(e) => setModal({ ...modal, datos: { ...modal.datos, descuento: e.target.value } })}
+                className="w-full border border-navy/10 rounded-lg px-3 py-2.5 outline-none focus:border-verde text-sm"
+              />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
