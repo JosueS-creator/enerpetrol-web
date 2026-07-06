@@ -17,7 +17,7 @@ const BENEFICIOS = [
   },
   {
     icon: Fuel,
-    titulo: 'Desde L 3.00 por galón',
+    titulo: 'Descuentos de L 1.00 y L 3.00 por galón',
     texto: 'El monto exacto depende de la estación donde cargues, pero siempre es un descuento real, no un porcentaje escondido.',
   },
   {
@@ -49,7 +49,7 @@ const PREGUNTAS = [
   },
   {
     q: '¿Cuánto puedo ahorrar?',
-    a: 'Desde L 3.00 por galón. El monto exacto depende de la estación donde cargues, pero siempre es un descuento real aplicado al momento.',
+    a: 'Descuentos de L 1.00 y L 3.00 por galón. El monto exacto depende de la estación donde cargues, pero siempre es un descuento real aplicado al momento.*',
   },
   {
     q: '¿Tiene algún costo la app?',
@@ -84,8 +84,8 @@ export default function Landing() {
               Descuento real,<br />directo en la bomba
             </h1>
             <p className="text-white/70 text-lg mb-9 max-w-lg">
-              Con la app Enerpetrol recibes desde <span className="text-white font-semibold">L 3.00 de descuento por galón</span>,
-              aplicado al instante en cualquiera de nuestras 35 estaciones. Sin pagos ocultos, sin membresías.
+              Con la app Enerpetrol recibes <span className="text-white font-semibold">descuentos de L 1.00 y L 3.00 por galón</span>,
+              aplicados al instante en cualquiera de nuestras 35 estaciones. Sin pagos ocultos, sin membresías.*
             </p>
             <div className="flex flex-wrap gap-4">
               <a
@@ -239,7 +239,9 @@ export default function Landing() {
         </div>
       </section>
 
+      <p className="text-center text-navy/40 text-xs py-4 bg-concrete">*Restricciones aplican.</p>
+
       <Footer />
     </div>
   )
-      }
+}
