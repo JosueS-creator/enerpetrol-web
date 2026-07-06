@@ -16,6 +16,28 @@ export const CIUDADES = [
   'Patuca',
 ]
 
+// Los 18 departamentos oficiales de Honduras
+export const DEPARTAMENTOS = [
+  'Atlántida',
+  'Choluteca',
+  'Colón',
+  'Comayagua',
+  'Copán',
+  'Cortés',
+  'El Paraíso',
+  'Francisco Morazán',
+  'Gracias a Dios',
+  'Intibucá',
+  'Islas de la Bahía',
+  'La Paz',
+  'Lempira',
+  'Ocotepeque',
+  'Olancho',
+  'Santa Bárbara',
+  'Valle',
+  'Yoro',
+]
+
 export const ESTADOS_FACTURA = ['pendiente', 'aprobada', 'rechazada']
 
 export const formatoLempiras = (valor) =>
