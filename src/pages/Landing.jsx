@@ -11,53 +11,57 @@ const APP_URL = 'https://enerpetrol-app-git-main-enerpetrol.vercel.app'
 
 const BENEFICIOS = [
   {
-    icon: Fuel,
-    titulo: '1 galón = 1 punto',
-    texto: 'Cada vez que cargas combustible en cualquiera de nuestras 35 estaciones, acumulas puntos automáticamente sobre tu tarjeta digital.',
-  },
-  {
-    icon: Gift,
-    titulo: 'Puntos que valen de verdad',
-    texto: 'Redime tus puntos por descuentos en Lempiras directamente en la estación, sin letra pequeña.',
-  },
-  {
     icon: Percent,
-    titulo: 'Código de descuento fijo',
-    texto: 'Tu código de descuento vive en tu tarjeta digital y lo muestras en caja para aplicar tu beneficio al instante.',
+    titulo: 'Descuento inmediato en bomba',
+    texto: 'Muestra tu código en caja al pagar tu combustible y tu descuento se aplica al instante. Nada que esperar, nada que canjear.',
   },
   {
-    icon: ScanLine,
-    titulo: 'Sube tu factura, listo',
-    texto: 'Fotografía tu factura desde la app; nuestro equipo la aprueba y tus galones se acreditan a tu cuenta.',
+    icon: Fuel,
+    titulo: 'Desde L 3.00 por galón',
+    texto: 'El monto exacto depende de la estación donde cargues, pero siempre es un descuento real, no un porcentaje escondido.',
+  },
+  {
+    icon: ShieldCheck,
+    titulo: 'Sin membresías ni pagos ocultos',
+    texto: 'La app es gratuita. No hay cuotas, suscripciones ni letra pequeña: el descuento es directo.',
   },
   {
     icon: MapPin,
     titulo: 'Red en 13 ciudades',
-    texto: 'De Tegucigalpa a Trojes, tu tarjeta funciona igual en cualquier estación Enerpetrol del país.',
+    texto: 'De Tegucigalpa a Trojes, tu tarjeta funciona igual en cualquiera de nuestras 35 estaciones.',
   },
   {
-    icon: ShieldCheck,
-    titulo: 'Tu cuenta, protegida',
-    texto: 'Inicia sesión de forma segura y controla tu historial de galones y redenciones en todo momento.',
+    icon: Gift,
+    titulo: 'De regalo, acumulas puntos',
+    texto: 'Sube tu factura desde la app y cada galón aprobado suma a tu historial. Un extra, no el objetivo principal.',
+  },
+  {
+    icon: ScanLine,
+    titulo: 'Tu tarjeta, siempre a mano',
+    texto: 'Tu código de descuento vive en tu tarjeta digital, lista para mostrarla en caja en segundos.',
   },
 ]
 
 const PREGUNTAS = [
   {
-    q: '¿Cómo empiezo a acumular puntos?',
-    a: 'Descarga la app, crea tu cuenta y obtén tu número de tarjeta digital (formato ENP-XXXX-XXXX). Cada factura de combustible que subas y sea aprobada suma galones a tu cuenta.',
+    q: '¿Cómo funciona el descuento?',
+    a: 'Descarga la app y obtén tu tarjeta digital con tu código único. Muestra ese código en caja al pagar tu combustible y el descuento se aplica de inmediato, directo en bomba.',
   },
   {
-    q: '¿Cómo se calculan mis puntos?',
-    a: 'Ganas 1 punto por cada galón de combustible que cargues y sea aprobado. Así de simple: mientras más recorres, más puntos acumulas.',
+    q: '¿Cuánto puedo ahorrar?',
+    a: 'Desde L 3.00 por galón. El monto exacto depende de la estación donde cargues, pero siempre es un descuento real aplicado al momento.',
+  },
+  {
+    q: '¿Tiene algún costo la app?',
+    a: 'No. Es completamente gratuita, sin membresías, cuotas ni pagos ocultos. El descuento no depende de ningún plan de pago.',
+  },
+  {
+    q: '¿Además del descuento, gano algo más?',
+    a: 'Sí, como extra: si subes tu factura desde la app, cada galón aprobado suma a tu historial acumulado. Es un bono adicional, no el objetivo principal de la app.',
   },
   {
     q: '¿En qué estaciones puedo usar mi tarjeta?',
     a: 'En cualquiera de nuestras 35 estaciones distribuidas en 13 ciudades de Honduras: Tegucigalpa, San Pedro Sula, La Ceiba, Choluteca, Danlí y más.',
-  },
-  {
-    q: '¿Qué pasa si mi factura no se aprueba de inmediato?',
-    a: 'Nuestro equipo revisa cada factura subida y la aprueba o rechaza indicando el motivo. Puedes ver el estado de cada una desde tu app.',
   },
 ]
 
@@ -77,11 +81,11 @@ export default function Landing() {
               Red Enerpetrol · Honduras
             </span>
             <h1 className="font-display text-5xl sm:text-6xl text-white leading-[1.05] mb-6">
-              Cada tanque te acerca<br />a tu próximo descuento
+              Descuento real,<br />directo en la bomba
             </h1>
             <p className="text-white/70 text-lg mb-9 max-w-lg">
-              La app de lealtad de Enerpetrol convierte cada galón que cargas en puntos reales,
-              canjeables en cualquiera de nuestras 35 estaciones a lo largo de Honduras.
+              Con la app Enerpetrol recibes desde <span className="text-white font-semibold">L 3.00 de descuento por galón</span>,
+              aplicado al instante en cualquiera de nuestras 35 estaciones. Sin pagos ocultos, sin membresías.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
@@ -130,11 +134,10 @@ export default function Landing() {
       <section id="app" className="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-14 items-center">
         <div data-reveal className="order-2 md:order-1">
           <span className="text-verde font-mono text-xs tracking-[0.2em] uppercase">Tu tarjeta, en tu bolsillo</span>
-          <h2 className="font-display text-4xl text-navy mt-3 mb-5">Todo tu historial de galones en un solo lugar</h2>
+          <h2 className="font-display text-4xl text-navy mt-3 mb-5">Tu descuento, siempre listo para mostrar</h2>
           <p className="text-navy/70 mb-6 leading-relaxed">
-            Tu tarjeta digital Enerpetrol guarda tu número único, tu código de descuento y el
-            balance de galones acumulados. Sube tus facturas desde el celular y da seguimiento
-            a cada aprobación en tiempo real.
+            Tu tarjeta digital Enerpetrol guarda tu código único para aplicar tu descuento en caja.
+            De paso, cada factura que subas queda registrada en tu historial, como un bono adicional.
           </p>
           <a
             href={APP_URL}
@@ -158,12 +161,13 @@ export default function Landing() {
                 <p className="text-white font-mono text-lg tracking-wider mt-1">ENP-4471-8823</p>
               </div>
               <div>
-                <p className="text-white/50 text-[11px]">Galones acumulados</p>
-                <p className="text-white font-mono text-4xl mt-1">128.4</p>
-                <div className="flex items-center gap-2 mt-5 bg-white/10 rounded-lg px-3 py-2">
+                <p className="text-white/50 text-[11px]">Tu descuento en esta estación</p>
+                <p className="text-white font-mono text-4xl mt-1">L 3.00<span className="text-base text-white/50 font-body">/gal</span></p>
+                <div className="flex items-center gap-2 mt-4 bg-white/10 rounded-lg px-3 py-2">
                   <Percent size={14} className="text-gas-amber shrink-0" />
-                  <p className="text-white/80 text-[11px]">Código para solicitar descuento</p>
+                  <p className="text-white/80 text-[11px]">Muestra este código en caja</p>
                 </div>
+                <p className="text-white/40 text-[11px] mt-3">+ 128.4 galones registrados en tu historial</p>
               </div>
             </div>
           </div>
@@ -223,7 +227,7 @@ export default function Landing() {
           className="absolute inset-y-0 -left-1/4 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-shine pointer-events-none"
         />
         <div className="relative max-w-4xl mx-auto px-6 py-20 text-center">
-          <h2 className="font-display text-4xl text-white mb-5 drop-shadow-sm">Tu próximo tanque puede valerte puntos</h2>
+          <h2 className="font-display text-4xl text-white mb-5 drop-shadow-sm">Tu próximo tanque puede costarte menos</h2>
           <a
             href={APP_URL}
             target="_blank"
@@ -238,4 +242,4 @@ export default function Landing() {
       <Footer />
     </div>
   )
-}
+      }
