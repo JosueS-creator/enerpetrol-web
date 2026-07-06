@@ -26,6 +26,7 @@ export default function Footer() {
           <div>
             <p className="text-white font-semibold mb-3">Empresa</p>
             <ul className="space-y-2">
+              <li><a href="/privacidad.html" className="hover:text-white">Política de privacidad</a></li>
               <li><Link to="/admin/login" className="hover:text-white">Acceso administrativo</Link></li>
             </ul>
           </div>
