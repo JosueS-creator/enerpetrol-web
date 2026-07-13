@@ -1,15 +1,18 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Check, X as XIcon, Trash2, ImageIcon } from 'lucide-react'
+import { Check, X as XIcon, Trash2, ImageIcon, Pencil } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import { procesarReferidoSiAplica } from '../../lib/referidos'
 import { PageHeader, Modal, Badge } from '../../components/AdminUI'
-import { ESTADOS_FACTURA, formatoFecha, formatoGalones } from '../../lib/constants'
+import { formatoFecha, formatoGalones } from '../../lib/constants'
 
 export default function Facturas() {
   const [facturas, setFacturas] = useState([])
   const [loading, setLoading] = useState(true)
   const [filtroEstado, setFiltroEstado] = useState('pendiente')
   const [modalAprobar, setModalAprobar] = useState(null) // { factura, galones }
+  const [modalEditar, setModalEditar] = useState(null) // { factura, galones }
   const [procesando, setProcesando] = useState(false)
+  const [avisoReferido, setAvisoReferido] = useState('')
 
   const cargar = async () => {
     setLoading(true)
@@ -37,11 +40,31 @@ export default function Facturas() {
     return data?.publicUrl
   }
 
+  // Ajusta el saldo de Enermonedas del cliente por la diferencia entre lo que
+  // tenía acreditado antes y lo que debe quedar acreditado después.
+  const ajustarSaldoCliente = async (clienteId, delta) => {
+    if (!delta) return
+    const { data: perfil, error } = await supabase
+      .from('perfiles')
+      .select('galones_acumulados')
+      .eq('id', clienteId)
+      .single()
+    if (error || !perfil) return
+    await supabase
+      .from('perfiles')
+      .update({ galones_acumulados: (perfil.galones_acumulados || 0) + delta })
+      .eq('id', clienteId)
+  }
+
+  const acreditadoSegun = (estado, galones) => (estado === 'aprobada' ? Number(galones || 0) : 0)
+
   const confirmarAprobacion = async (e) => {
     e.preventDefault()
     setProcesando(true)
+    setAvisoReferido('')
     const { factura, galones } = modalAprobar
     const galonesFinal = parseFloat(galones) || 0
+    const eraAprobada = factura.estado === 'aprobada'
 
     const { error: errFactura } = await supabase
       .from('facturas')
@@ -54,27 +77,30 @@ export default function Facturas() {
       return
     }
 
-    const nuevoTotal = (factura.perfiles ? await obtenerGalonesActuales(factura.perfiles.id) : 0) + galonesFinal
-    const { error: errPerfil } = await supabase
-      .from('perfiles')
-      .update({ galones_acumulados: nuevoTotal })
-      .eq('id', factura.perfiles.id)
+    const delta = acreditadoSegun('aprobada', galonesFinal) - acreditadoSegun(factura.estado, factura.galones)
+    await ajustarSaldoCliente(factura.perfiles.id, delta)
+
+    if (!eraAprobada) {
+      const resultado = await procesarReferidoSiAplica(factura.perfiles.id)
+      if (resultado.aplico) {
+        setAvisoReferido(`✅ Se acreditó 1 Enermoneda a ${resultado.referidor} por referir a este cliente.`)
+      }
+    }
 
     setProcesando(false)
-    if (errPerfil) {
-      alert('La factura se aprobó, pero no se pudo actualizar el saldo del usuario: ' + errPerfil.message)
-    }
     setModalAprobar(null)
     cargar()
   }
 
-  const obtenerGalonesActuales = async (perfilId) => {
-    const { data } = await supabase.from('perfiles').select('galones_acumulados').eq('id', perfilId).single()
-    return data?.galones_acumulados || 0
-  }
-
   const rechazar = async (factura) => {
-    if (!confirm('¿Rechazar esta factura?')) return
+    const advertencia =
+      factura.estado === 'aprobada'
+        ? `Esta factura ya estaba aprobada y sus ${formatoGalones(factura.galones)} galones fueron acreditados. Al rechazarla, se le restarán esas Enermonedas al cliente. ¿Continuar?`
+        : '¿Rechazar esta factura?'
+    if (!confirm(advertencia)) return
+
+    const delta = acreditadoSegun('rechazada', factura.galones) - acreditadoSegun(factura.estado, factura.galones)
+
     const { error } = await supabase
       .from('facturas')
       .update({ estado: 'rechazada', resuelto_en: new Date().toISOString() })
@@ -83,13 +109,35 @@ export default function Facturas() {
       alert('Error: ' + error.message)
       return
     }
+    await ajustarSaldoCliente(factura.perfiles.id, delta)
+    cargar()
+  }
+
+  const confirmarEdicionGalones = async (e) => {
+    e.preventDefault()
+    setProcesando(true)
+    const { factura, galones } = modalEditar
+    const galonesFinal = parseFloat(galones) || 0
+
+    const { error } = await supabase.from('facturas').update({ galones: galonesFinal }).eq('id', factura.id)
+    if (error) {
+      alert('Error: ' + error.message)
+      setProcesando(false)
+      return
+    }
+
+    const delta = acreditadoSegun(factura.estado, galonesFinal) - acreditadoSegun(factura.estado, factura.galones)
+    await ajustarSaldoCliente(factura.perfiles.id, delta)
+
+    setProcesando(false)
+    setModalEditar(null)
     cargar()
   }
 
   const eliminar = async (factura) => {
     const advertencia =
       factura.estado === 'aprobada'
-        ? 'Esta factura ya fue aprobada. Eliminarla NO revertirá los galones ya acreditados al usuario. ¿Deseas continuar?'
+        ? 'Esta factura ya fue aprobada. Eliminarla NO revertirá los galones ya acreditados al usuario (usa "Rechazar" primero si quieres revertirlos). ¿Deseas continuar?'
         : '¿Eliminar esta factura permanentemente?'
     if (!confirm(advertencia)) return
     const { error } = await supabase.from('facturas').delete().eq('id', factura.id)
@@ -103,6 +151,12 @@ export default function Facturas() {
   return (
     <div>
       <PageHeader title="Facturas" subtitle={`${facturas.length} facturas registradas en total`} />
+
+      {avisoReferido && (
+        <div className="mx-8 mb-4 bg-verde/10 border border-verde/30 text-verde-dark text-sm rounded-lg px-4 py-3">
+          {avisoReferido}
+        </div>
+      )}
 
       <div className="px-8 pb-4 flex gap-2 flex-wrap">
         {['pendiente', 'aprobada', 'rechazada', 'todas'].map((estado) => (
@@ -144,10 +198,22 @@ export default function Facturas() {
                       {f.estaciones?.nombre || '—'}
                       <p className="text-navy/40 text-xs">{f.estaciones?.ciudad}</p>
                     </td>
-                    <td className="px-6 py-3.5 font-mono text-navy/70">{formatoGalones(f.galones)}</td>
+                    <td className="px-6 py-3.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-mono text-navy/70">{formatoGalones(f.galones)}</span>
+                        <button
+                          onClick={() => setModalEditar({ factura: f, galones: f.galones })}
+                          className="p-1 rounded hover:bg-navy/5 text-navy/40 hover:text-navy"
+                          aria-label="Editar galones"
+                          title="Editar galones"
+                        >
+                          <Pencil size={13} />
+                        </button>
+                      </div>
+                    </td>
                     <td className="px-6 py-3.5">
                       {f.imagen_url ? (
-                        <a
+                        
                           href={urlImagen(f.imagen_url)}
                           target="_blank"
                           rel="noreferrer"
@@ -169,28 +235,31 @@ export default function Facturas() {
                     </td>
                     <td className="px-6 py-3.5">
                       <div className="flex justify-end gap-1.5">
-                        {f.estado === 'pendiente' && (
-                          <>
-                            <button
-                              onClick={() => setModalAprobar({ factura: f, galones: f.galones })}
-                              className="p-2 rounded-lg hover:bg-verde/10 text-verde"
-                              aria-label="Aprobar"
-                            >
-                              <Check size={16} />
-                            </button>
-                            <button
-                              onClick={() => rechazar(f)}
-                              className="p-2 rounded-lg hover:bg-gas-amber/10 text-gas-amberDark"
-                              aria-label="Rechazar"
-                            >
-                              <XIcon size={16} />
-                            </button>
-                          </>
+                        {f.estado !== 'aprobada' && (
+                          <button
+                            onClick={() => setModalAprobar({ factura: f, galones: f.galones })}
+                            className="p-2 rounded-lg hover:bg-verde/10 text-verde"
+                            aria-label="Aprobar"
+                            title="Aprobar"
+                          >
+                            <Check size={16} />
+                          </button>
+                        )}
+                        {f.estado !== 'rechazada' && (
+                          <button
+                            onClick={() => rechazar(f)}
+                            className="p-2 rounded-lg hover:bg-gas-amber/10 text-gas-amberDark"
+                            aria-label="Rechazar"
+                            title="Rechazar"
+                          >
+                            <XIcon size={16} />
+                          </button>
                         )}
                         <button
                           onClick={() => eliminar(f)}
                           className="p-2 rounded-lg hover:bg-red-50 text-red-500"
                           aria-label="Eliminar"
+                          title="Eliminar"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -216,6 +285,11 @@ export default function Facturas() {
             <p className="text-navy/60 text-sm">
               Cliente: <span className="font-medium text-navy">{modalAprobar.factura.perfiles?.nombre}</span>
             </p>
+            {modalAprobar.factura.estado === 'rechazada' && (
+              <p className="text-gas-amberDark text-xs bg-gas-amber/10 rounded-lg px-3 py-2">
+                Esta factura estaba rechazada. Al aprobarla se le acreditarán los galones al cliente.
+              </p>
+            )}
             <div>
               <label className="block text-navy/60 text-xs uppercase tracking-wide mb-1.5">
                 Galones a acreditar
@@ -237,7 +311,41 @@ export default function Facturas() {
               disabled={procesando}
               className="w-full bg-verde-metal hover:brightness-110 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
             >
-              {procesando ? 'Aprobando…' : 'Aprobar y acreditar galones'}
+              {procesando ? 'Aprobando…' : 'Aprobar y acreditar Enermonedas'}
+            </button>
+          </form>
+        </Modal>
+      )}
+
+      {modalEditar && (
+        <Modal title="Editar galones de la factura" onClose={() => setModalEditar(null)}>
+          <form onSubmit={confirmarEdicionGalones} className="space-y-4">
+            <p className="text-navy/60 text-sm">
+              Cliente: <span className="font-medium text-navy">{modalEditar.factura.perfiles?.nombre}</span>
+            </p>
+            {modalEditar.factura.estado === 'aprobada' && (
+              <p className="text-gas-amberDark text-xs bg-gas-amber/10 rounded-lg px-3 py-2">
+                Esta factura ya está aprobada: el saldo de Enermonedas del cliente se ajustará automáticamente
+                por la diferencia.
+              </p>
+            )}
+            <div>
+              <label className="block text-navy/60 text-xs uppercase tracking-wide mb-1.5">Galones</label>
+              <input
+                type="number"
+                step="0.01"
+                required
+                value={modalEditar.galones}
+                onChange={(e) => setModalEditar({ ...modalEditar, galones: e.target.value })}
+                className="w-full border border-navy/10 rounded-lg px-3 py-2.5 outline-none focus:border-verde text-sm"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={procesando}
+              className="w-full bg-verde-metal hover:brightness-110 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
+            >
+              {procesando ? 'Guardando…' : 'Guardar cambio'}
             </button>
           </form>
         </Modal>
