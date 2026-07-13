@@ -42,7 +42,7 @@ export default function Dashboard() {
 
       <div className="px-8 grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard label="Estaciones activas" value={loading ? '—' : stats.estaciones} icon={MapPin} accent="verde" />
-        <StatCard label="Usuarios registrados" value={loading ? '—' : stats.usuarios} icon={Users} accent="navy" />
+        <StatCard label="Clientes registrados" value={loading ? '—' : stats.usuarios} icon={Users} accent="navy" />
         <StatCard label="Facturas totales" value={loading ? '—' : stats.facturas} icon={Receipt} accent="navy" />
         <StatCard label="Pendientes de revisar" value={loading ? '—' : stats.pendientes} icon={Clock} accent="amber" />
       </div>
