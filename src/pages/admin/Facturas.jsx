@@ -212,7 +212,7 @@ export default function Facturas() {
                       </div>
                     </td>
                     <td className="px-6 py-3.5">
-                      {f.imagen_url ? (
+                     href={urlImagen {f.imagen_url ? (
                         
                           href={urlImagen(f.imagen_url)}
                           target="_blank"
