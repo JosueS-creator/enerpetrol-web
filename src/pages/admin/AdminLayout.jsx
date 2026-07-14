@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, MapPin, Users, Receipt, BarChart3, LogOut, Gift } from 'lucide-react'
+import { LayoutDashboard, MapPin, Users, Receipt, BarChart3, LogOut, Gift, MessageSquare } from 'lucide-react'
 import LogoMark from '../../components/LogoMark'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../lib/useAuth'
@@ -10,6 +10,7 @@ const NAV = [
   { to: '/admin/clientes', label: 'Clientes', icon: Users },
   { to: '/admin/facturas', label: 'Facturas', icon: Receipt },
   { to: '/admin/referidos', label: 'Referidos', icon: Gift },
+  { to: '/admin/comentarios', label: 'Comentarios', icon: MessageSquare },
   { to: '/admin/reportes', label: 'Reportes', icon: BarChart3 },
 ]
 
