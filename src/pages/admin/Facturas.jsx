@@ -212,8 +212,8 @@ export default function Facturas() {
                       </div>
                     </td>
                     <td className="px-6 py-3.5">
-                     href={urlImagen {f.imagen_url ? (
-                        
+                      {f.imagen_url ? (
+                        <a
                           href={urlImagen(f.imagen_url)}
                           target="_blank"
                           rel="noreferrer"
@@ -351,5 +351,7 @@ export default function Facturas() {
         </Modal>
       )}
     </div>
-  )
+    )
 }
+  
+                                          }
