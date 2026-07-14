@@ -213,7 +213,7 @@ export default function Facturas() {
                     </td>
                     <td className="px-6 py-3.5">
                       {f.imagen_url ? (
-                        <a
+                        
                           href={urlImagen(f.imagen_url)}
                           target="_blank"
                           rel="noreferrer"
@@ -221,10 +221,6 @@ export default function Facturas() {
                         >
                           <ImageIcon size={14} /> Ver imagen
                         </a>
-                      ) : (
-                        <span className="text-navy/30 text-xs">Sin imagen</span>
-                      )}
-                    </td>
                       ) : (
                         <span className="text-navy/30 text-xs">Sin imagen</span>
                       )}
