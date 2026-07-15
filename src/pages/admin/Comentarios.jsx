@@ -26,12 +26,25 @@ export default function Comentarios() {
       const [{ data: filas, error }, { data: listaEstaciones }] = await Promise.all([
         supabase
           .from('calificaciones')
-          .select('*, perfiles(nombre, numero_tarjeta), estaciones(id, nombre, ciudad)')
+          .select('*, estaciones(id, nombre, ciudad)')
           .order('creado_en', { ascending: false }),
         supabase.from('estaciones').select('id, nombre, ciudad').order('nombre'),
       ])
       if (error) console.error(error)
-      setComentarios(filas ?? [])
+
+      const idsClientes = [...new Set((filas ?? []).map((f) => f.cliente_id).filter(Boolean))]
+      let perfilesPorId = {}
+      if (idsClientes.length > 0) {
+        const { data: perfiles } = await supabase
+          .from('perfiles')
+          .select('id, nombre, numero_tarjeta')
+          .in('id', idsClientes)
+        perfilesPorId = Object.fromEntries((perfiles ?? []).map((p) => [p.id, p]))
+      }
+
+      const filasConCliente = (filas ?? []).map((f) => ({ ...f, perfiles: perfilesPorId[f.cliente_id] || null }))
+
+      setComentarios(filasConCliente)
       setEstaciones(listaEstaciones ?? [])
       setLoading(false)
     }
