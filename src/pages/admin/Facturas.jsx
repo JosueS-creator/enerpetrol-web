@@ -351,7 +351,5 @@ export default function Facturas() {
         </Modal>
       )}
     </div>
-    )
+  )
 }
-  
-                                          }
