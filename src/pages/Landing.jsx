@@ -75,7 +75,19 @@ export default function Landing() {
 
       {/* HERO */}
       <section ref={heroRef} className="relative bg-navy-ink pt-32 pb-20 overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6">
+        <video
+          className="absolute inset-0 w-full h-full object-cover motion-reduce:hidden"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/video/hero-poster.jpg"
+        >
+          <source src="/video/hero-surtidor.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-ink/90 via-navy-ink/65 to-navy-ink/90" />
+
+        <div className="relative max-w-6xl mx-auto px-6">
           <div data-reveal className="max-w-2xl">
             <span className="inline-block font-mono text-xs tracking-[0.2em] text-gas-amber uppercase mb-5">
               Red Enerpetrol · Honduras
