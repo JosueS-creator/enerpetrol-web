@@ -34,11 +34,7 @@ export default function Facturas() {
     [facturas, filtroEstado]
   )
 
-  const urlImagen = (path) => {
-    if (!path) return null
-    const { data } = supabase.storage.from('Facturas').getPublicUrl(path)
-    return data?.publicUrl
-  }
+  const urlImagen = (path) => path || null
 
   // Ajusta el saldo de Enermonedas del cliente por la diferencia entre lo que
   // tenía acreditado antes y lo que debe quedar acreditado después.
