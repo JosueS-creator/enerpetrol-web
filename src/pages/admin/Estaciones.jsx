@@ -66,6 +66,16 @@ export default function Estaciones() {
     if (!confirm(`¿Eliminar la estación "${estacion.nombre}"? Esta acción no se puede deshacer.`)) return
     const { error } = await supabase.from('estaciones').delete().eq('id', estacion.id)
     if (error) {
+      if (error.message.includes('facturas_estacion_id_fkey')) {
+        if (
+          confirm(
+            `"${estacion.nombre}" ya tiene facturas registradas, así que no se puede eliminar (se perdería ese historial). ¿Quieres desactivarla en su lugar? Así desaparece de la app pero conservas los reportes.`
+          )
+        ) {
+          await toggleActiva(estacion)
+        }
+        return
+      }
       alert('No se pudo eliminar: ' + error.message)
       return
     }
@@ -73,6 +83,13 @@ export default function Estaciones() {
   }
 
   const toggleActiva = async (estacion) => {
+    const { data: sesion } = await supabase.auth.getSession()
+    alert(
+      'DIAGNÓSTICO:\n' +
+      'Hay sesión activa: ' + (!!sesion?.session) + '\n' +
+      'Usuario: ' + (sesion?.session?.user?.email || 'ninguno') + '\n' +
+      'Token expira: ' + (sesion?.session?.expires_at ? new Date(sesion.session.expires_at * 1000).toLocaleString() : 'N/A')
+    )
     const { error } = await supabase.from('estaciones').update({ activa: !estacion.activa }).eq('id', estacion.id)
     if (error) {
       alert('No se pudo actualizar: ' + error.message)
