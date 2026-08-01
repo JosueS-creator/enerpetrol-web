@@ -99,13 +99,17 @@ export default function Estaciones() {
       .eq('id', sesion?.session?.user?.id)
       .single()
 
+    const { data: esAdminResultado, error: errEsAdmin } = await supabase.rpc('es_admin')
+
     alert(
+      '🔵 VERSIÓN DE PRUEBA 3 🔵\n\n' +
       'DIAGNÓSTICO:\n' +
       'Hay sesión activa: ' + (!!sesion?.session) + '\n' +
       'Usuario: ' + (sesion?.session?.user?.email || 'ninguno') + '\n' +
       'Claims del token: ' + claims + '\n' +
       'Mi perfil (consultado en vivo): ' + JSON.stringify(miPerfil) + '\n' +
-      'Error al consultar mi perfil: ' + (errPerfil ? errPerfil.message : 'ninguno')
+      'es_admin() devuelve: ' + JSON.stringify(esAdminResultado) + '\n' +
+      'Error en es_admin(): ' + (errEsAdmin ? errEsAdmin.message : 'ninguno')
     )
     const { error } = await supabase.from('estaciones').update({ activa: !estacion.activa }).eq('id', estacion.id)
     if (error) {
