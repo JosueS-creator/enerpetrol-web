@@ -6,7 +6,7 @@ import LogoMark from '../components/LogoMark'
 
 export default function AdminActualizarPassword() {
   const navigate = useNavigate()
-  const [sesionValida, setSesionValida] = useState(null) // null = verificando, true/false
+  const [sesionValida, setSesionValida] = useState(null)
   const [password, setPassword] = useState('')
   const [confirmar, setConfirmar] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -15,12 +15,9 @@ export default function AdminActualizarPassword() {
   const [enviando, setEnviando] = useState(false)
 
   useEffect(() => {
-    // Cuando el usuario llega desde el link del correo, Supabase crea una sesión
-    // temporal de tipo "recovery". Verificamos que exista antes de mostrar el formulario.
     supabase.auth.getSession().then(({ data }) => {
       setSesionValida(!!data.session)
     })
-
     const { data: listener } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') setSesionValida(true)
     })
@@ -30,7 +27,6 @@ export default function AdminActualizarPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-
     if (password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres.')
       return
@@ -39,11 +35,9 @@ export default function AdminActualizarPassword() {
       setError('Las contraseñas no coinciden.')
       return
     }
-
     setEnviando(true)
     const { error: updateError } = await supabase.auth.updateUser({ password })
     setEnviando(false)
-
     if (updateError) {
       setError('No se pudo actualizar la contraseña: ' + updateError.message)
       return
@@ -61,9 +55,7 @@ export default function AdminActualizarPassword() {
         </div>
 
         <div className="bg-navy-card rounded-2xl p-8 border border-white/10">
-          {sesionValida === null && (
-            <p className="text-white/60 text-sm text-center">Verificando enlace…</p>
-          )}
+          {sesionValida === null && <p className="text-white/60 text-sm text-center">Verificando enlace…</p>}
 
           {sesionValida === false && (
             <div className="text-center">

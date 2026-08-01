@@ -6,9 +6,12 @@ import AdminLayout from './pages/admin/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
 import Estaciones from './pages/admin/Estaciones'
 import Clientes from './pages/admin/Clientes'
+import Empresas from './pages/admin/Empresas'
 import Facturas from './pages/admin/Facturas'
+import Canjes from './pages/admin/Canjes'
 import Referidos from './pages/admin/Referidos'
 import Comentarios from './pages/admin/Comentarios'
+import Banners from './pages/admin/Banners'
 import Reportes from './pages/admin/Reportes'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -30,9 +33,12 @@ export default function App() {
           <Route index element={<Dashboard />} />
           <Route path="estaciones" element={<Estaciones />} />
           <Route path="clientes" element={<Clientes />} />
+          <Route path="empresas" element={<Empresas />} />
           <Route path="facturas" element={<Facturas />} />
+          <Route path="canjes" element={<Canjes />} />
           <Route path="referidos" element={<Referidos />} />
           <Route path="comentarios" element={<Comentarios />} />
+          <Route path="banners" element={<Banners />} />
           <Route path="reportes" element={<Reportes />} />
         </Route>
       </Routes>

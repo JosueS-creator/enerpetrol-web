@@ -6,29 +6,165 @@
   <title>Política de Privacidad — Enerpetrol</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F7F8FA; color: #2D3748; line-height: 1.7; }
-    header { background: linear-gradient(135deg, #0F2A4A 0%, #1A3D6B 100%); padding: 32px 24px; text-align: center; }
-    header h1 { color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: 0.05em; }
-    header .subtitulo { color: #5BAE2F; font-size: 13px; margin-top: 4px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
-    .vigencia { background: #5BAE2F; color: #ffffff; text-align: center; padding: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; }
-    .contenido { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
-    .intro { background: #ffffff; border-left: 4px solid #5BAE2F; border-radius: 8px; padding: 16px 20px; margin-bottom: 32px; font-size: 14px; color: #4A5568; }
-    .seccion { background: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-    .seccion h2 { color: #0F2A4A; font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
-    .seccion h2 .numero { background: #5BAE2F; color: #ffffff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-    .seccion p { font-size: 14px; color: #4A5568; margin-bottom: 10px; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F7F8FA;
+      color: #2D3748;
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0F2A4A 0%, #1A3D6B 100%);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    header .subtitulo {
+      color: #5BAE2F;
+      font-size: 13px;
+      margin-top: 4px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .vigencia {
+      background: #5BAE2F;
+      color: #ffffff;
+      text-align: center;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .contenido {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    .intro {
+      background: #ffffff;
+      border-left: 4px solid #5BAE2F;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      font-size: 14px;
+      color: #4A5568;
+    }
+
+    .seccion {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .seccion h2 {
+      color: #0F2A4A;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .seccion h2 .numero {
+      background: #5BAE2F;
+      color: #ffffff;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .seccion p {
+      font-size: 14px;
+      color: #4A5568;
+      margin-bottom: 10px;
+    }
+
     .seccion p:last-child { margin-bottom: 0; }
-    .seccion ul { list-style: none; padding: 0; }
-    .seccion ul li { font-size: 14px; color: #4A5568; padding: 6px 0 6px 20px; position: relative; border-bottom: 1px solid #F0F2F5; }
+
+    .seccion ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .seccion ul li {
+      font-size: 14px;
+      color: #4A5568;
+      padding: 6px 0 6px 20px;
+      position: relative;
+      border-bottom: 1px solid #F0F2F5;
+    }
+
     .seccion ul li:last-child { border-bottom: none; }
-    .seccion ul li::before { content: ''; position: absolute; left: 0; top: 14px; width: 8px; height: 8px; background: #5BAE2F; border-radius: 50%; }
-    .seccion ul li strong { color: #0F2A4A; }
-    .contacto { background: linear-gradient(135deg, #0F2A4A 0%, #1A3D6B 100%); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
-    .contacto h2 { color: #ffffff; font-size: 15px; font-weight: 700; margin-bottom: 16px; }
-    .contacto a { display: block; color: #8FCB4D; font-size: 14px; text-decoration: none; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+    .seccion ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 8px;
+      height: 8px;
+      background: #5BAE2F;
+      border-radius: 50%;
+    }
+
+    .seccion ul li strong {
+      color: #0F2A4A;
+    }
+
+    .contacto {
+      background: linear-gradient(135deg, #0F2A4A 0%, #1A3D6B 100%);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .contacto h2 {
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .contacto a {
+      display: block;
+      color: #8FCB4D;
+      font-size: 14px;
+      text-decoration: none;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
     .contacto a:last-child { border-bottom: none; }
     .contacto a:hover { color: #ffffff; }
-    footer { text-align: center; padding: 24px; font-size: 12px; color: #9AA5AE; }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: #9AA5AE;
+    }
+
     footer span { color: #5BAE2F; font-weight: 600; }
   </style>
 </head>
