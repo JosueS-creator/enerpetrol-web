@@ -101,15 +101,37 @@ export default function Estaciones() {
 
     const { data: esAdminResultado, error: errEsAdmin } = await supabase.rpc('es_admin')
 
+    // Prueba directa con fetch, sin pasar por el cliente supabase-js
+    let resultadoFetchDirecto = 'no probado'
+    try {
+      const resp = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/estaciones?id=eq.${estacion.id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+            Authorization: 'Bearer ' + sesion?.session?.access_token,
+            'Content-Type': 'application/json',
+            Prefer: 'return=representation',
+          },
+          body: JSON.stringify({ activa: estacion.activa }), // mismo valor, solo para probar el permiso sin cambiar nada real
+        }
+      )
+      const textoResp = await resp.text()
+      resultadoFetchDirecto = 'status ' + resp.status + ' → ' + textoResp
+    } catch (e) {
+      resultadoFetchDirecto = 'Error de red: ' + e.message
+    }
+
     alert(
-      '🔵 VERSIÓN DE PRUEBA 3 🔵\n\n' +
+      '🔵 VERSIÓN DE PRUEBA 4 🔵\n\n' +
       'DIAGNÓSTICO:\n' +
       'Hay sesión activa: ' + (!!sesion?.session) + '\n' +
       'Usuario: ' + (sesion?.session?.user?.email || 'ninguno') + '\n' +
       'Claims del token: ' + claims + '\n' +
       'Mi perfil (consultado en vivo): ' + JSON.stringify(miPerfil) + '\n' +
       'es_admin() devuelve: ' + JSON.stringify(esAdminResultado) + '\n' +
-      'Error en es_admin(): ' + (errEsAdmin ? errEsAdmin.message : 'ninguno')
+      'Fetch directo: ' + resultadoFetchDirecto
     )
     const { error } = await supabase.from('estaciones').update({ activa: !estacion.activa }).eq('id', estacion.id)
     if (error) {
