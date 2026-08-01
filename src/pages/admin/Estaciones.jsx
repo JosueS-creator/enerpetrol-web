@@ -84,11 +84,20 @@ export default function Estaciones() {
 
   const toggleActiva = async (estacion) => {
     const { data: sesion } = await supabase.auth.getSession()
+    let claims = 'No se pudo decodificar'
+    try {
+      const token = sesion?.session?.access_token
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      claims = 'role: ' + payload.role + ' | sub: ' + payload.sub
+    } catch (e) {
+      claims = 'Error: ' + e.message
+    }
     alert(
       'DIAGNÓSTICO:\n' +
       'Hay sesión activa: ' + (!!sesion?.session) + '\n' +
       'Usuario: ' + (sesion?.session?.user?.email || 'ninguno') + '\n' +
-      'Token expira: ' + (sesion?.session?.expires_at ? new Date(sesion.session.expires_at * 1000).toLocaleString() : 'N/A')
+      'Token expira: ' + (sesion?.session?.expires_at ? new Date(sesion.session.expires_at * 1000).toLocaleString() : 'N/A') + '\n' +
+      'Claims del token: ' + claims
     )
     const { error } = await supabase.from('estaciones').update({ activa: !estacion.activa }).eq('id', estacion.id)
     if (error) {
