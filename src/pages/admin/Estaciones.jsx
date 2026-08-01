@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Plus, Pencil, Trash2, Search } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import { supaUpdate } from '../../lib/supaUpdate'
 import { PageHeader, Modal, Badge } from '../../components/AdminUI'
 import { CIUDADES, DEPARTAMENTOS } from '../../lib/constants'
 
@@ -51,7 +52,7 @@ export default function Estaciones() {
     const { error: dbError } =
       modal.modo === 'crear'
         ? await supabase.from('estaciones').insert(payload)
-        : await supabase.from('estaciones').update(payload).eq('id', modal.datos.id)
+        : await supaUpdate('estaciones', `id=eq.${modal.datos.id}`, payload)
 
     setGuardando(false)
     if (dbError) {
@@ -83,57 +84,7 @@ export default function Estaciones() {
   }
 
   const toggleActiva = async (estacion) => {
-    const { data: sesion } = await supabase.auth.getSession()
-    let claims = 'No se pudo decodificar'
-    try {
-      const token = sesion?.session?.access_token
-      const payload = JSON.parse(atob(token.split('.')[1]))
-      claims = 'role: ' + payload.role + ' | sub: ' + payload.sub
-    } catch (e) {
-      claims = 'Error: ' + e.message
-    }
-
-    const { data: miPerfil, error: errPerfil } = await supabase
-      .from('perfiles')
-      .select('rol, nombre')
-      .eq('id', sesion?.session?.user?.id)
-      .single()
-
-    const { data: esAdminResultado, error: errEsAdmin } = await supabase.rpc('es_admin')
-
-    // Prueba directa con fetch, sin pasar por el cliente supabase-js
-    let resultadoFetchDirecto = 'no probado'
-    try {
-      const resp = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/estaciones?id=eq.${estacion.id}`,
-        {
-          method: 'PATCH',
-          headers: {
-            apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-            Authorization: 'Bearer ' + sesion?.session?.access_token,
-            'Content-Type': 'application/json',
-            Prefer: 'return=representation',
-          },
-          body: JSON.stringify({ activa: estacion.activa }), // mismo valor, solo para probar el permiso sin cambiar nada real
-        }
-      )
-      const textoResp = await resp.text()
-      resultadoFetchDirecto = 'status ' + resp.status + ' → ' + textoResp
-    } catch (e) {
-      resultadoFetchDirecto = 'Error de red: ' + e.message
-    }
-
-    alert(
-      '🔵 VERSIÓN DE PRUEBA 4 🔵\n\n' +
-      'DIAGNÓSTICO:\n' +
-      'Hay sesión activa: ' + (!!sesion?.session) + '\n' +
-      'Usuario: ' + (sesion?.session?.user?.email || 'ninguno') + '\n' +
-      'Claims del token: ' + claims + '\n' +
-      'Mi perfil (consultado en vivo): ' + JSON.stringify(miPerfil) + '\n' +
-      'es_admin() devuelve: ' + JSON.stringify(esAdminResultado) + '\n' +
-      'Fetch directo: ' + resultadoFetchDirecto
-    )
-    const { error } = await supabase.from('estaciones').update({ activa: !estacion.activa }).eq('id', estacion.id)
+    const { error } = await supaUpdate('estaciones', `id=eq.${estacion.id}`, { activa: !estacion.activa })
     if (error) {
       alert('No se pudo actualizar: ' + error.message)
       return
