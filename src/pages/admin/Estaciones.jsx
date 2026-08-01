@@ -92,12 +92,20 @@ export default function Estaciones() {
     } catch (e) {
       claims = 'Error: ' + e.message
     }
+
+    const { data: miPerfil, error: errPerfil } = await supabase
+      .from('perfiles')
+      .select('rol, nombre')
+      .eq('id', sesion?.session?.user?.id)
+      .single()
+
     alert(
       'DIAGNÓSTICO:\n' +
       'Hay sesión activa: ' + (!!sesion?.session) + '\n' +
       'Usuario: ' + (sesion?.session?.user?.email || 'ninguno') + '\n' +
-      'Token expira: ' + (sesion?.session?.expires_at ? new Date(sesion.session.expires_at * 1000).toLocaleString() : 'N/A') + '\n' +
-      'Claims del token: ' + claims
+      'Claims del token: ' + claims + '\n' +
+      'Mi perfil (consultado en vivo): ' + JSON.stringify(miPerfil) + '\n' +
+      'Error al consultar mi perfil: ' + (errPerfil ? errPerfil.message : 'ninguno')
     )
     const { error } = await supabase.from('estaciones').update({ activa: !estacion.activa }).eq('id', estacion.id)
     if (error) {
