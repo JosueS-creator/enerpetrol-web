@@ -102,9 +102,20 @@
 
     .seccion p:last-child { margin-bottom: 0; }
 
+    .seccion .subtitulo-interno {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0F2A4A;
+      margin-top: 16px;
+      margin-bottom: 6px;
+    }
+
+    .seccion .subtitulo-interno:first-of-type { margin-top: 0; }
+
     .seccion ul {
       list-style: none;
       padding: 0;
+      margin-bottom: 10px;
     }
 
     .seccion ul li {
@@ -146,7 +157,7 @@
       margin-bottom: 16px;
     }
 
-    .contacto a {
+    .contacto a, .contacto .linea {
       display: block;
       color: #8FCB4D;
       font-size: 14px;
@@ -155,7 +166,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    .contacto a:last-child { border-bottom: none; }
+    .contacto a:last-child, .contacto .linea:last-child { border-bottom: none; }
     .contacto a:hover { color: #ffffff; }
 
     footer {
@@ -176,79 +187,176 @@
   </header>
 
   <div class="vigencia">
-    Politica de Privacidad — Vigente a partir del 5 de julio de 2026
+    Política de Privacidad — Última actualización: 8 de agosto de 2026
   </div>
 
   <div class="contenido">
 
     <div class="intro">
-      En Enerpetrol nos comprometemos a proteger tu informacion personal. Esta politica explica que datos recopilamos, como los usamos y cuales son tus derechos como usuario de nuestra aplicacion de lealtad.
+      En Enerpetrol Honduras nos comprometemos a proteger la privacidad y la información personal de nuestros usuarios. Esta Política de Privacidad explica qué información recopilamos, cómo la utilizamos, cómo la protegemos y cuáles son tus derechos al utilizar la aplicación móvil Enerpetrol. Al descargar, registrarte o utilizar la aplicación, aceptas los términos establecidos en esta Política de Privacidad.
     </div>
 
     <div class="seccion">
-      <h2><span class="numero">1</span> Informacion que recopilamos</h2>
+      <h2><span class="numero">1</span> Responsable del tratamiento de los datos</h2>
       <ul>
-        <li><strong>Datos de registro:</strong> nombre completo, correo electronico y ciudad de residencia</li>
-        <li><strong>Datos de consumo:</strong> galones de combustible registrados, facturas fotograficas subidas y puntos acumulados</li>
-        <li><strong>Datos de ubicacion:</strong> solo cuando el usuario otorga permiso explicito, para mostrar las gasolineras mas cercanas</li>
-        <li><strong>Calificaciones y comentarios:</strong> evaluaciones sobre la atencion recibida en las gasolineras participantes</li>
-        <li><strong>Datos del dispositivo:</strong> tipo de navegador y sistema operativo, unicamente para mejorar la experiencia de uso</li>
+        <li><strong>Responsable:</strong> Enerpetrol Honduras</li>
+        <li><strong>Correo electrónico:</strong> ventaspublicalle@gmail.com</li>
+        <li><strong>WhatsApp:</strong> +504 8740-1299</li>
+        <li><strong>País:</strong> Honduras</li>
       </ul>
+      <p>Actualmente Enerpetrol opera como un proyecto comercial en desarrollo. Cuando la empresa sea constituida legalmente, esta política será actualizada para reflejar la información correspondiente.</p>
     </div>
 
     <div class="seccion">
-      <h2><span class="numero">2</span> Como usamos tu informacion</h2>
+      <h2><span class="numero">2</span> Información que recopilamos</h2>
+      <p>Dependiendo del uso que hagas de la aplicación, podemos recopilar la siguiente información:</p>
+
+      <p class="subtitulo-interno">Información de registro</p>
       <ul>
-        <li>Gestionar tu cuenta y programa de puntos de lealtad</li>
-        <li>Procesar y aprobar tus facturas de combustible</li>
-        <li>Mostrarte las gasolineras participantes de la red Enerpetrol</li>
-        <li>Notificarte cuando puedes canjear tu descuento</li>
-        <li>Mejorar nuestros servicios y la experiencia de la app</li>
+        <li>Nombre completo</li>
+        <li>Correo electrónico</li>
+        <li>Ciudad de residencia</li>
       </ul>
-    </div>
+      <p>Esta información es necesaria para crear y administrar tu cuenta.</p>
 
-    <div class="seccion">
-      <h2><span class="numero">3</span> Almacenamiento y seguridad</h2>
-      <p>Tu informacion se almacena de forma segura en servidores de Supabase (supabase.com), con cifrado en transito y en reposo.</p>
-      <p>No vendemos, alquilamos ni compartimos tu informacion personal con terceros, salvo cuando sea requerido por ley.</p>
-    </div>
-
-    <div class="seccion">
-      <h2><span class="numero">4</span> Imagenes de facturas</h2>
-      <p>Las fotografias de facturas que subes son almacenadas de forma segura y solo son accesibles por el personal autorizado de Enerpetrol para verificar tu consumo de combustible. No se usan para ningun otro proposito.</p>
-    </div>
-
-    <div class="seccion">
-      <h2><span class="numero">5</span> Autenticacion biometrica</h2>
-      <p>Si activas el inicio de sesion con huella digital o Face ID, los datos biometricos son procesados exclusivamente por tu dispositivo. Enerpetrol nunca accede ni almacena tu informacion biometrica.</p>
-    </div>
-
-    <div class="seccion">
-      <h2><span class="numero">6</span> Tus derechos</h2>
+      <p class="subtitulo-interno">Información relacionada con el programa de beneficios</p>
       <ul>
-        <li>Acceder a tu informacion personal</li>
-        <li>Corregir datos incorrectos</li>
-        <li>Solicitar la eliminacion de tu cuenta y datos</li>
-        <li>Retirar tu consentimiento en cualquier momento</li>
+        <li>Facturas de combustible cargadas por el usuario</li>
+        <li>Cantidad de galones registrados</li>
+        <li>Puntos acumulados</li>
+        <li>Historial de consumos</li>
+        <li>Historial de canjes realizados</li>
       </ul>
-      <p style="margin-top:12px;">Para ejercer estos derechos, contactanos en: <strong>ventaspublicalle@gmail.com</strong></p>
+
+      <p class="subtitulo-interno">Información de ubicación</p>
+      <p>Si otorgas autorización expresa, la aplicación podrá acceder a tu ubicación para mostrar las estaciones de servicio afiliadas más cercanas y facilitar la navegación hacia dichas estaciones. La ubicación nunca será utilizada para seguimiento continuo ni compartida con terceros con fines comerciales. Puedes desactivar este permiso desde la configuración de tu dispositivo en cualquier momento.</p>
+
+      <p class="subtitulo-interno">Fotografías de facturas</p>
+      <p>La aplicación permite cargar fotografías de facturas de combustible para validar el consumo registrado. Estas imágenes únicamente son utilizadas para verificar el consumo, validar la asignación de puntos, y detectar intentos de fraude o duplicidad. Las imágenes nunca son utilizadas con fines publicitarios.</p>
+
+      <p class="subtitulo-interno">Calificaciones y comentarios</p>
+      <p>Podrás evaluar la atención recibida en las estaciones afiliadas mediante comentarios y calificaciones. Estas evaluaciones se utilizan únicamente para mejorar la calidad del servicio.</p>
+
+      <p class="subtitulo-interno">Información del dispositivo</p>
+      <p>Para mejorar la experiencia de uso, podemos recopilar automáticamente información técnica como modelo del dispositivo, sistema operativo, versión de la aplicación, tipo de navegador (cuando corresponda), dirección IP, identificadores técnicos del dispositivo y registros de errores (logs). Esta información se utiliza exclusivamente para mejorar el funcionamiento y la estabilidad de la aplicación.</p>
     </div>
 
     <div class="seccion">
-      <h2><span class="numero">7</span> Datos de menores</h2>
-      <p>Enerpetrol no esta dirigida a menores de 18 anos y no recopila conscientemente informacion de menores de edad.</p>
+      <h2><span class="numero">3</span> Permisos solicitados por la aplicación</h2>
+      <p>Dependiendo de las funciones utilizadas, Enerpetrol puede solicitar los siguientes permisos:</p>
+      <ul>
+        <li><strong>Ubicación:</strong> para mostrar estaciones afiliadas cercanas</li>
+        <li><strong>Cámara:</strong> para capturar fotografías de facturas</li>
+        <li><strong>Galería o almacenamiento:</strong> para seleccionar fotografías existentes de facturas</li>
+        <li><strong>Internet:</strong> para sincronizar la información con nuestros servidores</li>
+        <li><strong>Notificaciones:</strong> para informarte sobre confirmación de facturas, acumulación de puntos, promociones, descuentos y noticias importantes</li>
+      </ul>
+      <p>Todos los permisos son opcionales, excepto aquellos indispensables para el funcionamiento básico de determinadas funciones.</p>
     </div>
 
     <div class="seccion">
-      <h2><span class="numero">8</span> Cambios a esta politica</h2>
-      <p>Nos reservamos el derecho de actualizar esta politica en cualquier momento. Te notificaremos sobre cambios significativos a traves de la app. El uso continuado de la app despues de los cambios constituye tu aceptacion de la nueva politica.</p>
+      <h2><span class="numero">4</span> ¿Cómo utilizamos tu información?</h2>
+      <p>La información recopilada es utilizada para:</p>
+      <ul>
+        <li>Crear y administrar tu cuenta</li>
+        <li>Validar tu identidad</li>
+        <li>Registrar consumos de combustible</li>
+        <li>Procesar facturas</li>
+        <li>Asignar puntos</li>
+        <li>Gestionar el programa de beneficios</li>
+        <li>Mostrar estaciones afiliadas</li>
+        <li>Brindar soporte técnico</li>
+        <li>Detectar actividades fraudulentas</li>
+        <li>Mejorar nuestros servicios</li>
+        <li>Cumplir obligaciones legales</li>
+      </ul>
+      <p>Nunca utilizaremos tu información para fines distintos sin tu consentimiento.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">5</span> Servicios de terceros</h2>
+      <p>Para operar la aplicación utilizamos servicios tecnológicos de terceros que cumplen con estándares internacionales de seguridad. Actualmente podemos utilizar:</p>
+      <ul>
+        <li><strong>Supabase</strong>, para autenticación, base de datos y almacenamiento</li>
+        <li><strong>Google Maps</strong>, para mostrar estaciones afiliadas y facilitar la navegación (si esta función está habilitada)</li>
+        <li>Servicios de notificaciones push, cuando corresponda</li>
+      </ul>
+      <p>Cada uno de estos proveedores trata la información conforme a sus propias políticas de privacidad.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">6</span> Almacenamiento y seguridad</h2>
+      <p>Toda la información se almacena utilizando medidas de seguridad técnicas y organizativas adecuadas. Entre ellas:</p>
+      <ul>
+        <li>Cifrado durante la transmisión de datos (HTTPS/TLS)</li>
+        <li>Cifrado de la información almacenada cuando corresponde</li>
+        <li>Acceso restringido al personal autorizado</li>
+        <li>Controles de autenticación</li>
+        <li>Copias de seguridad</li>
+      </ul>
+      <p>Aunque aplicamos medidas razonables para proteger tu información, ningún sistema es completamente infalible.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">7</span> Conservación de los datos</h2>
+      <p>Conservaremos tu información mientras tu cuenta permanezca activa. Si solicitas la eliminación de tu cuenta, eliminaremos tus datos personales en un plazo máximo de 30 días, salvo aquellos que debamos conservar por obligación legal o para resolver disputas relacionadas con el servicio.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">8</span> Uso de información biométrica</h2>
+      <p>Enerpetrol puede permitir el inicio de sesión mediante huella digital o Face ID. La autenticación biométrica es procesada exclusivamente por el sistema operativo de tu dispositivo. Enerpetrol no recopila datos biométricos, no almacena datos biométricos, y no tiene acceso a tu huella digital ni a tu reconocimiento facial.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">9</span> Prevención de fraude</h2>
+      <p>Con el fin de proteger el programa de beneficios, Enerpetrol podrá verificar la autenticidad de las facturas cargadas. Nos reservamos el derecho de rechazar facturas duplicadas, rechazar facturas alteradas, suspender temporalmente cuentas con actividad sospechosa, y cancelar cuentas cuando se detecte fraude comprobado.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">10</span> Compartición de información</h2>
+      <p>Enerpetrol no vende, alquila ni comercializa la información personal de sus usuarios. Solo podremos compartir información cuando sea requerido por una autoridad competente conforme a la ley, sea necesario para proteger nuestros derechos, o sea indispensable para operar el servicio mediante proveedores tecnológicos.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">11</span> Transferencias internacionales de datos</h2>
+      <p>Algunos de nuestros proveedores tecnológicos pueden almacenar o procesar información en servidores ubicados fuera de Honduras. Cuando esto ocurra, procuraremos que dichos proveedores implementen medidas adecuadas para proteger la información conforme a estándares internacionales de seguridad.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">12</span> Derechos del usuario</h2>
+      <p>Como usuario tienes derecho a:</p>
+      <ul>
+        <li>Acceder a tus datos personales</li>
+        <li>Rectificar información incorrecta</li>
+        <li>Solicitar la eliminación de tu cuenta</li>
+        <li>Solicitar la eliminación de tus datos personales</li>
+        <li>Retirar tu consentimiento cuando corresponda</li>
+        <li>Solicitar una copia de la información almacenada</li>
+      </ul>
+      <p>Puedes ejercer estos derechos escribiendo a: <strong>ventaspublicalle@gmail.com</strong></p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">13</span> Eliminación de la cuenta</h2>
+      <p>Puedes solicitar la eliminación de tu cuenta enviando un correo electrónico a <strong>ventaspublicalle@gmail.com</strong>. Una vez verificada tu identidad, eliminaremos tu cuenta, eliminaremos tus datos personales, y conservaremos únicamente aquella información que debamos mantener por obligación legal.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">14</span> Menores de edad</h2>
+      <p>Enerpetrol está dirigida exclusivamente a personas mayores de 18 años. No recopilamos conscientemente información de menores de edad. Si detectamos que hemos recopilado datos de un menor, procederemos a eliminarlos lo antes posible.</p>
+    </div>
+
+    <div class="seccion">
+      <h2><span class="numero">15</span> Cambios a esta política</h2>
+      <p>Podremos actualizar esta Política de Privacidad cuando sea necesario. Cuando existan cambios importantes, notificaremos a los usuarios mediante la aplicación o por otros medios razonables. La fecha de la última actualización siempre aparecerá al inicio de este documento.</p>
     </div>
 
     <div class="contacto">
-      <h2>Contacto</h2>
+      <h2>16. Contacto</h2>
+      <p style="color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 14px;">Si tienes preguntas sobre esta Política de Privacidad o deseas ejercer cualquiera de tus derechos, puedes comunicarte con nosotros:</p>
       <a href="mailto:ventaspublicalle@gmail.com">✉️ ventaspublicalle@gmail.com</a>
       <a href="https://wa.me/50487401299">💬 WhatsApp: +504 8740-1299</a>
-      <a href="#">🌐 Enerpetrol Honduras</a>
+      <span class="linea">🌎 País: Honduras</span>
     </div>
 
   </div>
