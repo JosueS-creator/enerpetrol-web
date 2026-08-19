@@ -1,4 +1,4 @@
-import { CIUDADES } from '../lib/constants'
+import { CIUDADES_ACTIVAS } from '../lib/constants'
 
 // Representa la red como una carretera con marcadores de kilometraje por ciudad.
 export default function RutaCiudades() {
@@ -10,7 +10,7 @@ export default function RutaCiudades() {
         <div className="absolute top-1/2 left-0 right-0 h-[3px] bg-road-lines opacity-70 -translate-y-1/2 animate-drive" />
 
         <div className="relative flex justify-between items-center py-16">
-          {CIUDADES.map((ciudad, i) => (
+          {CIUDADES_ACTIVAS.map((ciudad, i) => (
             <div key={ciudad} className="flex flex-col items-center gap-3 w-[70px] shrink-0">
               {i % 2 === 0 && (
                 <span className="font-mono text-[11px] text-white/70 whitespace-nowrap -translate-y-8">
