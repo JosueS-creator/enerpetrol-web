@@ -11,6 +11,11 @@ const APP_URL = 'https://enerpetrol-app-git-main-enerpetrol.vercel.app'
 
 const BENEFICIOS = [
   {
+    icon: ShieldCheck,
+    titulo: 'Sin membresías ni pagos ocultos',
+    texto: 'La app es gratuita. No hay cuotas, suscripciones ni letra pequeña: el descuento es directo.',
+  },
+  {
     icon: Percent,
     titulo: 'Descuento inmediato en bomba',
     texto: 'Muestra tu código en caja al pagar tu combustible y tu descuento se aplica al instante. Nada que esperar, nada que canjear.',
@@ -21,14 +26,9 @@ const BENEFICIOS = [
     texto: 'El monto exacto depende de la estación donde cargues, pero siempre es un descuento real, no un porcentaje escondido.',
   },
   {
-    icon: ShieldCheck,
-    titulo: 'Sin membresías ni pagos ocultos',
-    texto: 'La app es gratuita. No hay cuotas, suscripciones ni letra pequeña: el descuento es directo.',
-  },
-  {
     icon: MapPin,
-    titulo: 'Red en 13 ciudades',
-    texto: 'De Tegucigalpa a Trojes, tu tarjeta funciona igual en cualquiera de nuestras 35 estaciones.',
+    titulo: 'Red en 5 ciudades',
+    texto: 'De Tegucigalpa a Danlí, tu tarjeta funciona igual en cualquiera de nuestras 10 estaciones.',
   },
   {
     icon: Gift,
@@ -61,7 +61,7 @@ const PREGUNTAS = [
   },
   {
     q: '¿En qué estaciones puedo usar mi tarjeta?',
-    a: 'En cualquiera de nuestras 35 estaciones distribuidas en 13 ciudades de Honduras: Tegucigalpa, San Pedro Sula, La Ceiba, Choluteca, Danlí y más.',
+    a: 'En cualquiera de nuestras 10 estaciones distribuidas en 5 ciudades de Honduras: Tegucigalpa, San Pedro Sula, La Ceiba, Choluteca y Danlí.',
   },
 ]
 
@@ -95,10 +95,11 @@ export default function Landing() {
             <h1 className="font-display text-5xl sm:text-6xl text-white leading-[1.05] mb-6">
               Descuento real,<br />directo en la bomba
             </h1>
-            <p className="text-white/70 text-lg mb-9 max-w-lg">
+            <p className="text-white/70 text-lg mb-2 max-w-lg">
               Con la app Enerpetrol recibes <span className="text-white font-semibold">descuentos de L 1.00 y L 3.00 por galón</span>,
-              aplicados al instante en cualquiera de nuestras 35 estaciones. Sin pagos ocultos, sin membresías.*
+              aplicados al instante en cualquiera de nuestras 10 estaciones. Sin pagos ocultos, sin membresías.*
             </p>
+            <p className="text-white/40 text-xs mb-9">*Restricciones aplican.</p>
             <div className="flex flex-wrap gap-4">
               <a
                 href={APP_URL}
@@ -110,7 +111,7 @@ export default function Landing() {
               </a>
               <a
                 href="#beneficios"
-                className="border border-white/25 hover:border-white/50 text-white font-semibold px-7 py-3.5 rounded-full transition-colors"
+                className="border-2 border-white/50 hover:border-white bg-white/5 hover:bg-white/10 text-white font-semibold px-7 py-3.5 rounded-full transition-colors"
               >
                 Ver beneficios
               </a>
@@ -120,11 +121,11 @@ export default function Landing() {
           {/* Odómetro de red */}
           <div data-reveal className="grid grid-cols-2 gap-6 mt-16 max-w-sm border-t border-white/10 pt-8">
             <div>
-              <p className="text-3xl text-white font-mono"><OdometroDigit target={35} /></p>
+              <p className="text-3xl text-white font-mono"><OdometroDigit target={10} /></p>
               <p className="text-white/50 text-xs uppercase tracking-wide mt-1">Estaciones</p>
             </div>
             <div>
-              <p className="text-3xl text-white font-mono"><OdometroDigit target={13} /></p>
+              <p className="text-3xl text-white font-mono"><OdometroDigit target={5} /></p>
               <p className="text-white/50 text-xs uppercase tracking-wide mt-1">Ciudades</p>
             </div>
           </div>
@@ -136,7 +137,7 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto px-6 mb-8" data-reveal>
           <h2 className="font-display text-3xl text-white mb-2">Una ruta que cubre todo el país</h2>
           <p className="text-white/60 max-w-lg">
-            De occidente a oriente, tu tarjeta Enerpetrol funciona igual en las 13 ciudades donde tenemos presencia.
+            De occidente a oriente, tu tarjeta Enerpetrol funciona igual en las 5 ciudades donde tenemos presencia.
           </p>
         </div>
         <RutaCiudades />
