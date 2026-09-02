@@ -11,7 +11,7 @@ export default function Footer() {
             ENERPETROL
           </div>
           <p className="text-sm max-w-xs">
-            10 estaciones en 5 ciudades de Honduras. Un tanque a la vez, construimos tu ruta de descuentos.
+            41 estaciones en 17 ciudades de Honduras. Un tanque a la vez, construimos tu ruta de descuentos.
           </p>
         </div>
         <div className="flex gap-16 text-sm">
