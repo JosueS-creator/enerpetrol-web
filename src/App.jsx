@@ -5,6 +5,7 @@ import AdminActualizarPassword from './pages/AdminActualizarPassword'
 import AdminLayout from './pages/admin/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
 import Estaciones from './pages/admin/Estaciones'
+import Mapa from './pages/admin/Mapa'
 import Clientes from './pages/admin/Clientes'
 import Empresas from './pages/admin/Empresas'
 import Facturas from './pages/admin/Facturas'
@@ -32,6 +33,7 @@ export default function App() {
         >
           <Route index element={<Dashboard />} />
           <Route path="estaciones" element={<Estaciones />} />
+          <Route path="mapa" element={<Mapa />} />
           <Route path="clientes" element={<Clientes />} />
           <Route path="empresas" element={<Empresas />} />
           <Route path="facturas" element={<Facturas />} />
