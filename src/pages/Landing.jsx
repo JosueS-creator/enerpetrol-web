@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import OdometroDigit from '../components/OdometroDigit'
 import RutaCiudades from '../components/RutaCiudades'
+import { lazy, Suspense } from 'react'
+const MapaEstaciones = lazy(() => import('../components/MapaEstaciones'))
 import LogoMark from '../components/LogoMark'
 import { useReveal } from '../lib/useReveal'
 
@@ -141,6 +143,24 @@ export default function Landing() {
           </p>
         </div>
         <RutaCiudades />
+
+        <div className="max-w-6xl mx-auto px-6 mt-4" data-reveal>
+          <Suspense
+            fallback={
+              <div
+                className="rounded-2xl border border-navy/10 flex items-center justify-center bg-navy-card text-white/50 text-sm"
+                style={{ height: '480px' }}
+              >
+                Cargando mapa…
+              </div>
+            }
+          >
+            <MapaEstaciones altura="480px" />
+          </Suspense>
+          <p className="text-white/40 text-xs mt-3 text-center">
+            Explora el mapa: arrastra para rotar, o mantén Ctrl y arrastra para inclinar la vista.
+          </p>
+        </div>
       </section>
 
       {/* LA APP */}
