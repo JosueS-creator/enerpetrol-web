@@ -27,8 +27,8 @@ const BENEFICIOS = [
   },
   {
     icon: MapPin,
-    titulo: 'Red en 5 ciudades',
-    texto: 'De Tegucigalpa a Danlí, tu tarjeta funciona igual en cualquiera de nuestras 10 estaciones.',
+    titulo: 'Red en 17 ciudades',
+    texto: 'De Tegucigalpa a Trojes, tu tarjeta funciona igual en cualquiera de nuestras 41 estaciones.',
   },
   {
     icon: Gift,
@@ -61,7 +61,7 @@ const PREGUNTAS = [
   },
   {
     q: '¿En qué estaciones puedo usar mi tarjeta?',
-    a: 'En cualquiera de nuestras 10 estaciones distribuidas en 5 ciudades de Honduras: Tegucigalpa, San Pedro Sula, La Ceiba, Choluteca y Danlí.',
+    a: 'En cualquiera de nuestras 41 estaciones distribuidas en 17 ciudades de Honduras: Tegucigalpa, San Pedro Sula, La Ceiba, Choluteca, Danlí y más.',
   },
 ]
 
@@ -97,7 +97,7 @@ export default function Landing() {
             </h1>
             <p className="text-white/70 text-lg mb-2 max-w-lg">
               Con la app Enerpetrol recibes <span className="text-white font-semibold">descuentos de L 1.00 y L 3.00 por galón</span>,
-              aplicados al instante en cualquiera de nuestras 10 estaciones. Sin pagos ocultos, sin membresías.*
+              aplicados al instante en cualquiera de nuestras 41 estaciones. Sin pagos ocultos, sin membresías.*
             </p>
             <p className="text-white/40 text-xs mb-9">*Restricciones aplican.</p>
             <div className="flex flex-wrap gap-4">
@@ -121,11 +121,11 @@ export default function Landing() {
           {/* Odómetro de red */}
           <div data-reveal className="grid grid-cols-2 gap-6 mt-16 max-w-sm border-t border-white/10 pt-8">
             <div>
-              <p className="text-3xl text-white font-mono"><OdometroDigit target={10} /></p>
+              <p className="text-3xl text-white font-mono"><OdometroDigit target={41} /></p>
               <p className="text-white/50 text-xs uppercase tracking-wide mt-1">Estaciones</p>
             </div>
             <div>
-              <p className="text-3xl text-white font-mono"><OdometroDigit target={5} /></p>
+              <p className="text-3xl text-white font-mono"><OdometroDigit target={17} /></p>
               <p className="text-white/50 text-xs uppercase tracking-wide mt-1">Ciudades</p>
             </div>
           </div>
@@ -137,7 +137,7 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto px-6 mb-8" data-reveal>
           <h2 className="font-display text-3xl text-white mb-2">Una ruta que cubre todo el país</h2>
           <p className="text-white/60 max-w-lg">
-            De occidente a oriente, tu tarjeta Enerpetrol funciona igual en las 5 ciudades donde tenemos presencia.
+            De occidente a oriente, tu tarjeta Enerpetrol funciona igual en las 17 ciudades donde tenemos presencia.
           </p>
         </div>
         <RutaCiudades />
