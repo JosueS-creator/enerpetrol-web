@@ -9,7 +9,7 @@ const MapaEstaciones = lazy(() => import('../components/MapaEstaciones'))
 import LogoMark from '../components/LogoMark'
 import { useReveal } from '../lib/useReveal'
 
-const APP_URL = 'https://enerpetrol-app-git-main-enerpetrol.vercel.app'
+const APP_URL = 'https://enerpetrol-app.vercel.app'
 
 const BENEFICIOS = [
   {
