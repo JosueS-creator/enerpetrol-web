@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import LogoMark from './LogoMark'
 
+const APP_URL = 'https://enerpetrol-app.vercel.app'
+
 const LINKS = [
   { href: '#app', label: 'La app' },
   { href: '#beneficios', label: 'Beneficios' },
@@ -22,7 +24,7 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
-        scrolled ? 'bg-navy-ink/95 backdrop-blur shadow-lg' : 'bg-transparent'
+        scrolled ? 'bg-navy-ink/95 backdrop-blur shadow-lg' : 'bg-gradient-to-b from-navy-ink/70 via-navy-ink/30 to-transparent'
       }`}
     >
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
@@ -38,10 +40,12 @@ export default function Navbar() {
             </a>
           ))}
           <a
-            href="#app"
+            href={APP_URL}
+            target="_blank"
+            rel="noreferrer"
             className="bg-verde-metal hover:brightness-110 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors"
           >
-            Descargar app
+            Abrir la app Enerpetrol
           </a>
         </div>
 
@@ -58,11 +62,13 @@ export default function Navbar() {
             </a>
           ))}
           <a
-            href="#app"
+            href={APP_URL}
+            target="_blank"
+            rel="noreferrer"
             onClick={() => setOpen(false)}
             className="bg-verde-metal text-white text-sm font-semibold px-5 py-2.5 rounded-full text-center"
           >
-            Descargar app
+            Abrir la app Enerpetrol
           </a>
         </div>
       )}
