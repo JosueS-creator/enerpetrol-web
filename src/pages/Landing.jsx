@@ -158,7 +158,7 @@ export default function Landing() {
             <MapaEstaciones altura="480px" />
           </Suspense>
           <p className="text-white/40 text-xs mt-3 text-center">
-            Explora el mapa: arrastra para rotar, o mantén Ctrl y arrastra para inclinar la vista.
+            Explora el mapa: arrastra para moverte, y haz clic en cualquier punto para ver los detalles de esa estación.
           </p>
         </div>
       </section>
