@@ -19,7 +19,25 @@ export const CIUDADES = [
 // Ciudades donde realmente hay estaciones Enerpetrol activas ahora mismo.
 // Se usa en el landing (mapa de ruta y textos), a diferencia de CIUDADES
 // (que es la lista completa de sugerencias para el panel admin).
-export const CIUDADES_ACTIVAS = ['Tegucigalpa', 'San Pedro Sula', 'La Ceiba', 'Choluteca', 'Danli']
+export const CIUDADES_ACTIVAS = [
+  'Tegucigalpa',
+  'San Pedro Sula',
+  'Puerto Cortes',
+  'Choloma',
+  'La Ceiba',
+  'Yoro',
+  'La Esperanza',
+  'Choluteca',
+  'Danli',
+  'El Paraiso',
+  'San Marcos de Colon',
+  'Trojes',
+  'Patuca',
+  'Siguatepeque',
+  'Español',
+  'El Obraje',
+  'Las Flores',
+]
 
 // Los 18 departamentos oficiales de Honduras
 export const DEPARTAMENTOS = [
