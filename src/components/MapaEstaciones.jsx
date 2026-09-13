@@ -29,41 +29,47 @@ export default function MapaEstaciones({ admin = false, altura = '480px' }) {
 
       const estaciones = (data ?? []).filter((e) => e.lat && e.lng && !(e.lat === 0 && e.lng === 0))
 
+      const esMovil = window.innerWidth < 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+
       const map = new maplibregl.Map({
         container: mapDiv.current,
         style: 'https://tiles.openfreemap.org/styles/liberty',
         center: [-87.0, 14.3],
-        zoom: 6.6,
-        pitch: 50,
-        bearing: -10,
-        antialias: true,
+        zoom: esMovil ? 6.2 : 6.6,
+        pitch: esMovil ? 0 : 50,
+        bearing: esMovil ? 0 : -10,
+        antialias: !esMovil,
+        maxPitch: esMovil ? 0 : 60,
+        pixelRatio: esMovil ? 1 : undefined,
       })
       mapRef.current = map
 
-      map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right')
+      map.addControl(new maplibregl.NavigationControl({ visualizePitch: !esMovil }), 'top-right')
 
       map.on('load', () => {
-        try {
-          const layers = map.getStyle().layers
-          const labelLayer = layers.find((l) => l.type === 'symbol' && l.layout && l.layout['text-field'])
-          map.addLayer(
-            {
-              id: '3d-buildings',
-              source: 'openmaptiles',
-              'source-layer': 'building',
-              type: 'fill-extrusion',
-              minzoom: 13,
-              paint: {
-                'fill-extrusion-color': '#2A507A',
-                'fill-extrusion-height': ['coalesce', ['get', 'render_height'], 8],
-                'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0],
-                'fill-extrusion-opacity': 0.7,
+        if (!esMovil) {
+          try {
+            const layers = map.getStyle().layers
+            const labelLayer = layers.find((l) => l.type === 'symbol' && l.layout && l.layout['text-field'])
+            map.addLayer(
+              {
+                id: '3d-buildings',
+                source: 'openmaptiles',
+                'source-layer': 'building',
+                type: 'fill-extrusion',
+                minzoom: 13,
+                paint: {
+                  'fill-extrusion-color': '#2A507A',
+                  'fill-extrusion-height': ['coalesce', ['get', 'render_height'], 8],
+                  'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0],
+                  'fill-extrusion-opacity': 0.7,
+                },
               },
-            },
-            labelLayer ? labelLayer.id : undefined
-          )
-        } catch {
-          // el estilo puede no traer datos de edificios en algunas zonas, no es crítico
+              labelLayer ? labelLayer.id : undefined
+            )
+          } catch {
+            // el estilo puede no traer datos de edificios en algunas zonas, no es crítico
+          }
         }
 
         estaciones.forEach((e) => {
