@@ -18,7 +18,7 @@ export default function Facturas() {
     setLoading(true)
     const { data, error } = await supabase
       .from('facturas')
-      .select('*, perfiles(id, nombre, numero_tarjeta), estaciones(nombre, ciudad)')
+      .select('*, perfiles(id, nombre, numero_tarjeta), estaciones(nombre, ciudad, acumula_enermonedas)')
       .order('creado_en', { ascending: false })
     if (error) console.error(error)
     setFacturas(data ?? [])
@@ -52,7 +52,13 @@ export default function Facturas() {
       .eq('id', clienteId)
   }
 
-  const acreditadoSegun = (estado, galones) => (estado === 'aprobada' ? Number(galones || 0) : 0)
+  // Si la estación tiene bloqueada la acumulación de Enermonedas, una factura
+  // aprobada ahí nunca acredita galones al cliente, sin importar el monto.
+  const acreditadoSegun = (estado, galones, estacion) => {
+    if (estado !== 'aprobada') return 0
+    if (estacion && estacion.acumula_enermonedas === false) return 0
+    return Number(galones || 0)
+  }
 
   const confirmarAprobacion = async (e) => {
     e.preventDefault()
@@ -73,7 +79,9 @@ export default function Facturas() {
       return
     }
 
-    const delta = acreditadoSegun('aprobada', galonesFinal) - acreditadoSegun(factura.estado, factura.galones)
+    const delta =
+      acreditadoSegun('aprobada', galonesFinal, factura.estaciones) -
+      acreditadoSegun(factura.estado, factura.galones, factura.estaciones)
     await ajustarSaldoCliente(factura.perfiles.id, delta)
 
     if (!eraAprobada) {
@@ -95,7 +103,9 @@ export default function Facturas() {
         : '¿Rechazar esta factura?'
     if (!confirm(advertencia)) return
 
-    const delta = acreditadoSegun('rechazada', factura.galones) - acreditadoSegun(factura.estado, factura.galones)
+    const delta =
+      acreditadoSegun('rechazada', factura.galones, factura.estaciones) -
+      acreditadoSegun(factura.estado, factura.galones, factura.estaciones)
 
     const { error } = await supabase
       .from('facturas')
@@ -122,7 +132,9 @@ export default function Facturas() {
       return
     }
 
-    const delta = acreditadoSegun(factura.estado, galonesFinal) - acreditadoSegun(factura.estado, factura.galones)
+    const delta =
+      acreditadoSegun(factura.estado, galonesFinal, factura.estaciones) -
+      acreditadoSegun(factura.estado, factura.galones, factura.estaciones)
     await ajustarSaldoCliente(factura.perfiles.id, delta)
 
     setProcesando(false)
@@ -192,6 +204,11 @@ export default function Facturas() {
                     </td>
                     <td className="px-6 py-3.5 text-navy/70">
                       {f.estaciones?.nombre || '—'}
+                      {f.estaciones?.acumula_enermonedas === false && (
+                        <span className="ml-1.5 text-red-500 text-[10px] font-semibold align-middle" title="Enermonedas bloqueadas en esta estación">
+                          🔒 EM bloqueadas
+                        </span>
+                      )}
                       <p className="text-navy/40 text-xs">{f.estaciones?.ciudad}</p>
                     </td>
                     <td className="px-6 py-3.5">
@@ -286,6 +303,12 @@ export default function Facturas() {
                 Esta factura estaba rechazada. Al aprobarla se le acreditarán los galones al cliente.
               </p>
             )}
+            {modalAprobar.factura.estaciones?.acumula_enermonedas === false && (
+              <p className="text-red-600 text-xs bg-red-50 rounded-lg px-3 py-2">
+                ⚠️ Esta estación tiene bloqueada la acumulación de Enermonedas. La factura se puede aprobar
+                para dejar constancia, pero el cliente <strong>no</strong> recibirá galones por ella.
+              </p>
+            )}
             <div>
               <label className="block text-navy/60 text-xs uppercase tracking-wide mb-1.5">
                 Galones a acreditar
@@ -307,7 +330,11 @@ export default function Facturas() {
               disabled={procesando}
               className="w-full bg-verde-metal hover:brightness-110 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
             >
-              {procesando ? 'Aprobando…' : 'Aprobar y acreditar Enermonedas'}
+              {procesando
+                ? 'Aprobando…'
+                : modalAprobar.factura.estaciones?.acumula_enermonedas === false
+                ? 'Aprobar sin acreditar Enermonedas'
+                : 'Aprobar y acreditar Enermonedas'}
             </button>
           </form>
         </Modal>

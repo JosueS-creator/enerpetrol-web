@@ -5,7 +5,7 @@ import { supaUpdate } from '../../lib/supaUpdate'
 import { PageHeader, Modal, Badge } from '../../components/AdminUI'
 import { CIUDADES, DEPARTAMENTOS } from '../../lib/constants'
 
-const VACIA = { nombre: '', direccion: '', departamento: DEPARTAMENTOS[0], ciudad: '', descuento: 1, activa: true, lat: '', lng: '' }
+const VACIA = { nombre: '', direccion: '', departamento: DEPARTAMENTOS[0], ciudad: '', descuento: 1, activa: true, acumula_enermonedas: true, lat: '', lng: '' }
 
 export default function Estaciones() {
   const [estaciones, setEstaciones] = useState([])
@@ -47,6 +47,7 @@ export default function Estaciones() {
       lng: parseFloat(modal.datos.lng) || 0,
       descuento: parseFloat(modal.datos.descuento) || 0,
       activa: modal.datos.activa,
+      acumula_enermonedas: modal.datos.acumula_enermonedas,
     }
 
     const { error: dbError } =
@@ -92,6 +93,20 @@ export default function Estaciones() {
     cargar()
   }
 
+  const toggleEnermonedas = async (estacion) => {
+    const nuevoValor = !estacion.acumula_enermonedas
+    const advertencia = nuevoValor
+      ? `¿Volver a permitir que "${estacion.nombre}" acredite Enermonedas a sus clientes?`
+      : `¿Bloquear la acumulación de Enermonedas en "${estacion.nombre}"? Las facturas de esta estación se podrán seguir aprobando, pero no acreditarán galones al saldo del cliente.`
+    if (!confirm(advertencia)) return
+    const { error } = await supaUpdate('estaciones', `id=eq.${estacion.id}`, { acumula_enermonedas: nuevoValor })
+    if (error) {
+      alert('No se pudo actualizar: ' + error.message)
+      return
+    }
+    cargar()
+  }
+
   return (
     <div>
       <PageHeader
@@ -129,6 +144,7 @@ export default function Estaciones() {
                 <th className="px-6 py-3 font-medium">Ciudad</th>
                 <th className="px-6 py-3 font-medium">Descuento</th>
                 <th className="px-6 py-3 font-medium">Estado</th>
+                <th className="px-6 py-3 font-medium">Enermonedas</th>
                 <th className="px-6 py-3 font-medium text-right">Acciones</th>
               </tr>
             </thead>
@@ -146,6 +162,13 @@ export default function Estaciones() {
                     <td className="px-6 py-3.5">
                       <button onClick={() => toggleActiva(e)}>
                         <Badge tone={e.activa ? 'verde' : 'default'}>{e.activa ? 'Activa' : 'Inactiva'}</Badge>
+                      </button>
+                    </td>
+                    <td className="px-6 py-3.5">
+                      <button onClick={() => toggleEnermonedas(e)} title="Click para cambiar">
+                        <Badge tone={e.acumula_enermonedas ? 'verde' : 'red'}>
+                          {e.acumula_enermonedas ? 'Permitidas' : 'Bloqueadas'}
+                        </Badge>
                       </button>
                     </td>
                     <td className="px-6 py-3.5">
@@ -170,7 +193,7 @@ export default function Estaciones() {
                 ))}
               {!loading && filtradas.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-10 text-center text-navy/40">
+                  <td colSpan={7} className="px-6 py-10 text-center text-navy/40">
                     No se encontraron estaciones.
                   </td>
                 </tr>
@@ -270,6 +293,14 @@ export default function Estaciones() {
                 onChange={(e) => setModal({ ...modal, datos: { ...modal.datos, activa: e.target.checked } })}
               />
               Estación activa (visible en la app)
+            </label>
+            <label className="flex items-center gap-2 text-sm text-navy/70">
+              <input
+                type="checkbox"
+                checked={modal.datos.acumula_enermonedas}
+                onChange={(e) => setModal({ ...modal, datos: { ...modal.datos, acumula_enermonedas: e.target.checked } })}
+              />
+              Permite acumular Enermonedas (si lo desmarcas, las facturas de esta estación no acreditarán galones al cliente)
             </label>
 
             {error && <p className="text-red-500 text-sm">{error}</p>}
