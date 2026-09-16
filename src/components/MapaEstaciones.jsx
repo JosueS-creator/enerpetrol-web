@@ -18,7 +18,7 @@ export default function MapaEstaciones({ admin = false, altura = '480px' }) {
     let cancelado = false
 
     const iniciar = async () => {
-      let query = supabase.from('estaciones').select('id, nombre, ciudad, descuento, activa, acumula_enermonedas, lat, lng')
+      let query = supabase.from('estaciones').select('id, nombre, ciudad, descuento, activa, acumula_puntos, lat, lng')
       if (!admin) query = query.eq('activa', true)
       const { data, error: dbError } = await query
 
@@ -44,7 +44,7 @@ export default function MapaEstaciones({ admin = false, altura = '480px' }) {
       }).addTo(map)
 
       estaciones.forEach((e) => {
-        const bloqueada = admin && e.acumula_enermonedas === false
+        const bloqueada = admin && e.acumula_puntos === false
         const inactiva = admin && !e.activa
         const color = inactiva ? '#94A3B8' : bloqueada ? '#EF4444' : '#5BAE2F'
 
