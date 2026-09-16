@@ -5,7 +5,7 @@ import { supaUpdate } from '../../lib/supaUpdate'
 import { PageHeader, Modal, Badge } from '../../components/AdminUI'
 import { CIUDADES, DEPARTAMENTOS } from '../../lib/constants'
 
-const VACIA = { nombre: '', direccion: '', departamento: DEPARTAMENTOS[0], ciudad: '', descuento: 1, activa: true, acumula_enermonedas: true, lat: '', lng: '' }
+const VACIA = { nombre: '', direccion: '', departamento: DEPARTAMENTOS[0], ciudad: '', descuento: 1, activa: true, acumula_puntos: true, lat: '', lng: '' }
 
 export default function Estaciones() {
   const [estaciones, setEstaciones] = useState([])
@@ -47,7 +47,7 @@ export default function Estaciones() {
       lng: parseFloat(modal.datos.lng) || 0,
       descuento: parseFloat(modal.datos.descuento) || 0,
       activa: modal.datos.activa,
-      acumula_enermonedas: modal.datos.acumula_enermonedas,
+      acumula_puntos: modal.datos.acumula_puntos,
     }
 
     const { error: dbError } =
@@ -94,12 +94,12 @@ export default function Estaciones() {
   }
 
   const toggleEnermonedas = async (estacion) => {
-    const nuevoValor = !estacion.acumula_enermonedas
+    const nuevoValor = !estacion.acumula_puntos
     const advertencia = nuevoValor
       ? `¿Volver a permitir que "${estacion.nombre}" acredite Enermonedas a sus clientes?`
       : `¿Bloquear la acumulación de Enermonedas en "${estacion.nombre}"? Las facturas de esta estación se podrán seguir aprobando, pero no acreditarán galones al saldo del cliente.`
     if (!confirm(advertencia)) return
-    const { error } = await supaUpdate('estaciones', `id=eq.${estacion.id}`, { acumula_enermonedas: nuevoValor })
+    const { error } = await supaUpdate('estaciones', `id=eq.${estacion.id}`, { acumula_puntos: nuevoValor })
     if (error) {
       alert('No se pudo actualizar: ' + error.message)
       return
@@ -166,8 +166,8 @@ export default function Estaciones() {
                     </td>
                     <td className="px-6 py-3.5">
                       <button onClick={() => toggleEnermonedas(e)} title="Click para cambiar">
-                        <Badge tone={e.acumula_enermonedas ? 'verde' : 'red'}>
-                          {e.acumula_enermonedas ? 'Permitidas' : 'Bloqueadas'}
+                        <Badge tone={e.acumula_puntos ? 'verde' : 'red'}>
+                          {e.acumula_puntos ? 'Permitidas' : 'Bloqueadas'}
                         </Badge>
                       </button>
                     </td>
@@ -297,8 +297,8 @@ export default function Estaciones() {
             <label className="flex items-center gap-2 text-sm text-navy/70">
               <input
                 type="checkbox"
-                checked={modal.datos.acumula_enermonedas}
-                onChange={(e) => setModal({ ...modal, datos: { ...modal.datos, acumula_enermonedas: e.target.checked } })}
+                checked={modal.datos.acumula_puntos}
+                onChange={(e) => setModal({ ...modal, datos: { ...modal.datos, acumula_puntos: e.target.checked } })}
               />
               Permite acumular Enermonedas (si lo desmarcas, las facturas de esta estación no acreditarán galones al cliente)
             </label>
