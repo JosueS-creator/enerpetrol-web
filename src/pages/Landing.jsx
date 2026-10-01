@@ -1,4 +1,4 @@
-import { Fuel, Gift, ShieldCheck, MapPin, Percent, ScanLine, ChevronDown } from 'lucide-react'
+import { Fuel, Gift, ShieldCheck, MapPin, Percent, ScanLine, ChevronDown, Download, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -6,7 +6,6 @@ import OdometroDigit from '../components/OdometroDigit'
 import RutaCiudades from '../components/RutaCiudades'
 import { lazy, Suspense } from 'react'
 const MapaEstaciones = lazy(() => import('../components/MapaEstaciones'))
-import LogoMark from '../components/LogoMark'
 import { useReveal } from '../lib/useReveal'
 
 const APP_URL = 'https://enerpetrol-app.vercel.app'
@@ -44,6 +43,39 @@ const BENEFICIOS = [
   },
 ]
 
+const PASOS = [
+  {
+    icon: Download,
+    titulo: 'Crea tu cuenta',
+    texto: 'Regístrate con tu nombre, ciudad y correo — o directo con Google. Toma menos de un minuto.',
+    img: '/screens/01-crear-cuenta.png',
+  },
+  {
+    icon: MapPin,
+    titulo: 'Elige tu estación',
+    texto: 'El mapa te muestra las estaciones afiliadas más cercanas y cuánto ahorras en cada una.',
+    img: '/screens/02-elegir-estacion.png',
+  },
+  {
+    icon: CreditCard,
+    titulo: 'Muestra tu tarjeta al bombero',
+    texto: 'Tu tarjeta digital con tu código de descuento, lista para mostrarla antes de cargar.',
+    img: '/screens/03-tarjeta.png',
+  },
+  {
+    icon: ScanLine,
+    titulo: 'Sube tu factura y gana Enermonedas',
+    texto: 'Fotografía tu factura desde la app — la lectura de galones es automática.',
+    img: '/screens/04-subir-factura.png',
+  },
+  {
+    icon: Gift,
+    titulo: 'Acumula y canjea premios',
+    texto: 'Mira crecer tus Enermonedas y cámbialas por descuentos y recargas del catálogo de premios.',
+    img: '/screens/05-enermonedas.png',
+  },
+]
+
 const PREGUNTAS = [
   {
     q: '¿Cómo funciona el descuento?',
@@ -70,6 +102,7 @@ const PREGUNTAS = [
 export default function Landing() {
   const heroRef = useReveal()
   const [preguntaAbierta, setPreguntaAbierta] = useState(0)
+  const [pasoActual, setPasoActual] = useState(0)
 
   return (
     <div id="top" className="bg-concrete">
@@ -88,11 +121,13 @@ export default function Landing() {
           <source src="/video/hero-surtidor.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-navy-ink/90 via-navy-ink/65 to-navy-ink/90" />
+        <div className="absolute inset-0 bg-tech-grid-fine bg-[length:36px_36px] opacity-60 pointer-events-none" />
 
         <div className="relative max-w-6xl mx-auto px-6">
           <div data-reveal className="max-w-2xl">
-            <span className="inline-block font-mono text-xs tracking-[0.2em] text-gas-amber uppercase mb-5">
-              Red Enerpetrol · Honduras
+            <span className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.2em] text-verde uppercase mb-5 border border-verde/30 bg-verde/5 rounded-full px-3 py-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-verde animate-parpadeo" />
+              App progresiva · Red Enerpetrol Honduras
             </span>
             <h1 className="font-display text-5xl sm:text-6xl text-white leading-[1.05] mb-6">
               Descuento real,<br />directo en la bomba
@@ -121,7 +156,9 @@ export default function Landing() {
           </div>
 
           {/* Odómetro de red */}
-          <div data-reveal className="grid grid-cols-2 gap-6 mt-16 max-w-sm border-t border-white/10 pt-8">
+          <div data-reveal className="relative grid grid-cols-2 gap-6 mt-16 max-w-sm border border-white/10 bg-white/[0.03] backdrop-blur-sm rounded-xl px-6 py-5">
+            <span className="absolute -top-px -left-px w-3 h-3 border-t border-l border-verde/60" />
+            <span className="absolute -bottom-px -right-px w-3 h-3 border-b border-r border-verde/60" />
             <div>
               <p className="text-3xl text-white font-mono"><OdometroDigit target={41} /></p>
               <p className="text-white/50 text-xs uppercase tracking-wide mt-1">Estaciones</p>
@@ -163,44 +200,103 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* LA APP */}
-      <section id="app" className="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-14 items-center">
-        <div data-reveal className="order-2 md:order-1">
-          <span className="text-verde font-mono text-xs tracking-[0.2em] uppercase">Tu tarjeta, en tu bolsillo</span>
-          <h2 className="font-display text-4xl text-navy mt-3 mb-5">Tu descuento, siempre listo para mostrar</h2>
-          <p className="text-navy/70 mb-6 leading-relaxed">
-            Tu tarjeta digital Enerpetrol guarda tu código único para aplicar tu descuento en caja.
-            De paso, cada factura que subas queda registrada en tu historial, como un bono adicional.
+      {/* CÓMO FUNCIONA — la app como protagonista */}
+      <section id="app" className="relative bg-navy-ink py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-tech-grid bg-[length:48px_48px] opacity-40 pointer-events-none" />
+        <div className="relative max-w-6xl mx-auto px-6">
+          <div data-reveal className="max-w-lg mb-4">
+            <span className="text-verde font-mono text-xs tracking-[0.2em] uppercase">Cómo funciona</span>
+            <h2 className="font-display text-4xl text-white mt-3">De la app a tu descuento, en {PASOS.length} pasos</h2>
+          </div>
+          <p data-reveal className="text-white/40 text-sm mb-12">
+            Toca las flechas, los puntos, o cualquier paso para navegar las pantallas reales de la app →
           </p>
-          <a
-            href={APP_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-block bg-navy hover:bg-navy-card text-white font-semibold px-7 py-3.5 rounded-full transition-colors"
-          >
-            Crear mi cuenta gratis
-          </a>
-        </div>
 
-        {/* Mockup de tarjeta digital */}
-        <div data-reveal className="order-1 md:order-2 flex justify-center">
-          <div className="w-72 rounded-[2rem] bg-navy-ink p-3 shadow-2xl">
-            <div className="rounded-[1.5rem] bg-gradient-to-br from-navy-card to-navy-ink p-6 aspect-[9/16] flex flex-col justify-between border border-white/10">
-              <div>
-                <div className="flex items-center gap-2 text-white/80 text-xs font-mono uppercase tracking-widest">
-                  <LogoMark size={14} badgePadding="p-0.5" /> Enerpetrol
-                </div>
-                <p className="text-white/50 text-[11px] mt-6">Tarjeta digital</p>
-                <p className="text-white font-mono text-lg tracking-wider mt-1">ENP-4471-8823</p>
+          <div className="grid md:grid-cols-2 gap-14 items-center">
+            {/* Pasos numerados, clicables */}
+            <div data-reveal className="relative">
+              <div className="absolute left-[19px] top-5 bottom-5 w-px bg-gradient-to-b from-verde/60 via-verde/20 to-transparent" />
+              <div className="space-y-3">
+                {PASOS.map(({ icon: Icon, titulo, texto }, i) => (
+                  <button
+                    key={titulo}
+                    onClick={() => setPasoActual(i)}
+                    className="relative flex gap-5 text-left w-full py-2 group"
+                  >
+                    <div
+                      className={`relative shrink-0 w-10 h-10 rounded-lg flex items-center justify-center font-mono text-sm transition-colors border ${
+                        i === pasoActual
+                          ? 'bg-verde text-white border-verde'
+                          : 'bg-navy-card text-verde border-verde/40 group-hover:border-verde'
+                      }`}
+                    >
+                      0{i + 1}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <Icon size={16} className="text-verde" />
+                        <h3 className="font-display text-lg text-white">{titulo}</h3>
+                      </div>
+                      <p className="text-white/60 text-sm leading-relaxed">{texto}</p>
+                    </div>
+                  </button>
+                ))}
               </div>
-              <div>
-                <p className="text-white/50 text-[11px]">Tu descuento en esta estación</p>
-                <p className="text-white font-mono text-4xl mt-1">L 3.00<span className="text-base text-white/50 font-body">/gal</span></p>
-                <div className="flex items-center gap-2 mt-4 bg-white/10 rounded-lg px-3 py-2">
-                  <Percent size={14} className="text-gas-amber shrink-0" />
-                  <p className="text-white/80 text-[11px]">Muestra este código en caja</p>
+              <a
+                href={APP_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block mt-6 bg-verde-metal hover:brightness-110 text-white font-semibold px-7 py-3.5 rounded-full transition-colors"
+              >
+                Empezar ahora
+              </a>
+            </div>
+
+            {/* Teléfono interactivo con pantallas reales */}
+            <div data-reveal className="flex flex-col items-center">
+              <div className="relative animate-float">
+                <div className="absolute -inset-6 bg-verde/10 blur-3xl rounded-full" aria-hidden="true" />
+                <div className="relative w-[260px] rounded-[2.2rem] bg-navy-ink p-2.5 shadow-2xl border border-white/10">
+                  <div
+                    className="relative rounded-[1.8rem] overflow-hidden border border-white/10 bg-navy-card"
+                    style={{ aspectRatio: '420 / 866' }}
+                  >
+                    <img
+                      key={pasoActual}
+                      src={PASOS[pasoActual].img}
+                      alt={PASOS[pasoActual].titulo}
+                      className="w-full h-full object-cover object-top"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="absolute left-1/2 -translate-x-1/2 top-1 w-16 h-4 bg-navy-ink rounded-full" />
                 </div>
-                <p className="text-white/40 text-[11px] mt-3">+ 128.4 galones registrados en tu historial</p>
+
+                <button
+                  onClick={() => setPasoActual((pasoActual - 1 + PASOS.length) % PASOS.length)}
+                  aria-label="Pantalla anterior"
+                  className="absolute top-1/2 -left-12 -translate-y-1/2 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <button
+                  onClick={() => setPasoActual((pasoActual + 1) % PASOS.length)}
+                  aria-label="Siguiente pantalla"
+                  className="absolute top-1/2 -right-12 -translate-y-1/2 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+
+              <div className="flex gap-2 mt-6">
+                {PASOS.map((p, i) => (
+                  <button
+                    key={p.titulo}
+                    onClick={() => setPasoActual(i)}
+                    aria-label={`Ir a: ${p.titulo}`}
+                    className={`w-2 h-2 rounded-full transition-colors ${i === pasoActual ? 'bg-verde' : 'bg-white/20'}`}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -216,7 +312,8 @@ export default function Landing() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {BENEFICIOS.map(({ icon: Icon, titulo, texto }) => (
-              <div key={titulo} data-reveal className="border border-navy/10 rounded-2xl p-6 hover:border-verde/40 transition-colors">
+              <div key={titulo} data-reveal className="relative border border-navy/10 rounded-2xl p-6 hover:border-verde/40 transition-colors">
+                <span className="absolute -top-px -left-px w-3 h-3 border-t border-l border-verde/30" />
                 <Icon className="text-verde mb-4" size={26} strokeWidth={1.8} />
                 <h3 className="font-display text-lg text-navy mb-2">{titulo}</h3>
                 <p className="text-navy/60 text-sm leading-relaxed">{texto}</p>
