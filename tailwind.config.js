@@ -29,6 +29,8 @@ export default {
       backgroundImage: {
         'road-lines': 'repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(242,183,5,0.6) 40px, rgba(242,183,5,0.6) 72px)',
         'verde-metal': 'linear-gradient(120deg, #3E7A1D 0%, #5BAE2F 18%, #9AE06A 36%, #5BAE2F 52%, #326318 64%, #5BAE2F 80%, #86D454 100%)',
+        'tech-grid': 'linear-gradient(rgba(91,174,47,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(91,174,47,0.08) 1px, transparent 1px)',
+        'tech-grid-fine': 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
       },
       keyframes: {
         drive: {
@@ -47,12 +49,32 @@ export default {
           '0%': { transform: 'translateX(-120%) skewX(-15deg)' },
           '100%': { transform: 'translateX(220%) skewX(-15deg)' },
         },
+        scan: {
+          '0%': { backgroundPosition: '0 0' },
+          '100%': { backgroundPosition: '0 40px' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+        trazo: {
+          '0%': { strokeDashoffset: '240' },
+          '100%': { strokeDashoffset: '0' },
+        },
+        parpadeo: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.35' },
+        },
       },
       animation: {
         drive: 'drive 6s linear infinite',
         rise: 'rise 0.7s ease-out forwards',
         pulseDot: 'pulseDot 2s ease-in-out infinite',
         shine: 'shine 3.5s ease-in-out infinite',
+        scan: 'scan 3s linear infinite',
+        float: 'float 4s ease-in-out infinite',
+        trazo: 'trazo 2.4s ease-out forwards',
+        parpadeo: 'parpadeo 1.8s ease-in-out infinite',
       },
     },
   },
