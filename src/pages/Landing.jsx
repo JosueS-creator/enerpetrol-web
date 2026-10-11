@@ -1,4 +1,4 @@
-import { Fuel, Gift, ShieldCheck, MapPin, Percent, ScanLine, ChevronDown, Download, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Fuel, Gift, ShieldCheck, MapPin, Percent, ScanLine, ChevronDown, Download, CreditCard, ChevronLeft, ChevronRight, ArrowUpRight, Building2, Smartphone } from 'lucide-react'
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -137,22 +137,39 @@ export default function Landing() {
               aplicados al instante en cualquiera de nuestras 41 estaciones. Sin pagos ocultos, sin membresías.*
             </p>
             <p className="text-white/40 text-xs mb-9">*Restricciones aplican.</p>
-            <div className="flex flex-wrap gap-4">
+            <div className="grid sm:grid-cols-2 gap-3 max-w-xl">
               <a
                 href={APP_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="bg-verde-metal hover:brightness-110 text-white font-semibold px-7 py-3.5 rounded-full transition-colors"
+                className="group flex min-h-32 flex-col justify-between rounded-2xl border border-verde/50 bg-verde-metal/20 p-5 text-white transition-colors hover:bg-verde-metal/30"
               >
-                Abrir la app Enerpetrol
+                <span className="flex items-center justify-between">
+                  <Smartphone size={21} className="text-verde" aria-hidden="true" />
+                  <ArrowUpRight size={18} className="text-white/60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+                </span>
+                <span>
+                  <span className="block font-display text-lg font-semibold">Enerpetrol App</span>
+                  <span className="mt-1 block text-sm text-white/65">Ahorra en cada carga con tu tarjeta digital.</span>
+                </span>
               </a>
               <a
-                href="#beneficios"
-                className="border-2 border-white/50 hover:border-white bg-white/5 hover:bg-white/10 text-white font-semibold px-7 py-3.5 rounded-full transition-colors"
+                href="/gasolineras"
+                className="group flex min-h-32 flex-col justify-between rounded-2xl border border-white/20 bg-white/[0.06] p-5 text-white transition-colors hover:border-verde/50 hover:bg-white/10"
               >
-                Ver beneficios
+                <span className="flex items-center justify-between">
+                  <Building2 size={21} className="text-verde" aria-hidden="true" />
+                  <ArrowUpRight size={18} className="text-white/60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+                </span>
+                <span>
+                  <span className="block font-display text-lg font-semibold">Enerpetrol Business</span>
+                  <span className="mt-1 block text-sm text-white/65">Una propuesta comercial para gasolineras.</span>
+                </span>
               </a>
             </div>
+            <a href="#beneficios" className="mt-4 inline-flex text-sm font-medium text-white/60 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white">
+              Ver beneficios de la app
+            </a>
           </div>
 
           {/* Odómetro de red */}
