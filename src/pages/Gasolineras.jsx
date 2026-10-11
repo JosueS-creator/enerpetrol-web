@@ -131,7 +131,7 @@ function SelectField({ label, name, children }) {
   )
 }
 
-export default function Gasolineras() {
+export default function Gasolineras({ standalone = false }) {
   const [phoneError, setPhoneError] = useState('')
   const [preparedRequest, setPreparedRequest] = useState(null)
 
@@ -186,7 +186,7 @@ export default function Gasolineras() {
 
   return (
     <div id="top" className="bg-concrete text-navy">
-      <Navbar />
+      <Navbar business={standalone} />
 
       <main>
         <section className="relative overflow-hidden bg-navy-ink pt-32 pb-16 text-white sm:pt-40 sm:pb-24">
@@ -391,7 +391,7 @@ export default function Gasolineras() {
         </section>
       </main>
 
-      <Footer />
+      <Footer business={standalone} />
     </div>
   )
 }

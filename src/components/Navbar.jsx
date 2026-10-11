@@ -11,7 +11,13 @@ const LINKS = [
   { href: '/#preguntas', label: 'Preguntas' },
 ]
 
-export default function Navbar() {
+const BUSINESS_LINKS = [
+  { href: '#como-funciona', label: 'Cómo funciona' },
+  { href: '#preguntas-comerciales', label: 'Preguntas' },
+  { href: '#contacto-comercial', label: 'Contacto' },
+]
+
+export default function Navbar({ business = false }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -34,14 +40,20 @@ export default function Navbar() {
         </a>
 
         <div className="hidden md:flex items-center gap-8">
-          {LINKS.map((l) => (
+          {(business ? BUSINESS_LINKS : LINKS).map((l) => (
             <a key={l.href} href={l.href} className="text-white/80 hover:text-white text-sm font-medium transition-colors">
               {l.label}
             </a>
           ))}
-          <a href="/gasolineras" className="text-white/80 hover:text-white text-sm font-semibold transition-colors">
-            Para gasolineras
-          </a>
+          {business ? (
+            <a href="#contacto-comercial" className="text-white/80 hover:text-white text-sm font-semibold transition-colors">
+              Afiliar mi estación
+            </a>
+          ) : (
+            <a href="/gasolineras" className="text-white/80 hover:text-white text-sm font-semibold transition-colors">
+              Para gasolineras
+            </a>
+          )}
           <a
             href={APP_URL}
             target="_blank"
@@ -59,14 +71,20 @@ export default function Navbar() {
 
       {open && (
         <div id="mobile-navigation" className="md:hidden bg-navy-ink px-6 pb-6 flex flex-col gap-4">
-          {LINKS.map((l) => (
+          {(business ? BUSINESS_LINKS : LINKS).map((l) => (
             <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="text-white/80 text-sm font-medium">
               {l.label}
             </a>
           ))}
-          <a href="/gasolineras" onClick={() => setOpen(false)} className="text-white/80 text-sm font-semibold">
-            Para gasolineras
-          </a>
+          {business ? (
+            <a href="#contacto-comercial" onClick={() => setOpen(false)} className="text-white/80 text-sm font-semibold">
+              Afiliar mi estación
+            </a>
+          ) : (
+            <a href="/gasolineras" onClick={() => setOpen(false)} className="text-white/80 text-sm font-semibold">
+              Para gasolineras
+            </a>
+          )}
           <a
             href={APP_URL}
             target="_blank"

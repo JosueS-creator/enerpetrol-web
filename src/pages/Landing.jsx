@@ -154,7 +154,9 @@ export default function Landing() {
                 </span>
               </a>
               <a
-                href="/gasolineras"
+                href="https://enerpetrol-business.vercel.app"
+                target="_blank"
+                rel="noreferrer"
                 className="group flex min-h-32 flex-col justify-between rounded-2xl border border-white/20 bg-white/[0.06] p-5 text-white transition-colors hover:border-verde/50 hover:bg-white/10"
               >
                 <span className="flex items-center justify-between">

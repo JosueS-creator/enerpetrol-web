@@ -104,3 +104,13 @@ contraseña para entrar al panel web — es la misma base de usuarios.
 - Si se requiere almacenamiento automático, primero habrá que definir el
   destino comercial y una vía de inserción segura con las políticas RLS
   correspondientes. No se requiere ni se expone una clave `service_role`.
+
+## Proyecto independiente de Enerpetrol Business
+
+- El proyecto Vercel `enerpetrol-business` usa `npm run build:business` y la
+  carpeta de salida `dist-business`; su raíz abre directamente la página para
+  gasolineras.
+- `business/main.jsx` monta la sección comercial sin cargar el resto de la
+  aplicación ni inicializar Supabase. Así, este proyecto no necesita copiar las
+  variables de Supabase del sitio institucional.
+- El sitio institucional conserva `npm run build` y la salida `dist`.

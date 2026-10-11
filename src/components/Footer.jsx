@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import LogoMark from './LogoMark'
 
-export default function Footer() {
+export default function Footer({ business = false }) {
   return (
     <footer className="bg-navy-ink text-white/60 border-t border-white/10">
       <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between gap-8">
@@ -16,19 +16,35 @@ export default function Footer() {
         </div>
         <div className="flex gap-16 text-sm">
           <div>
-            <p className="text-white font-semibold mb-3">La app</p>
+            <p className="text-white font-semibold mb-3">{business ? 'Enerpetrol Business' : 'La app'}</p>
             <ul className="space-y-2">
-              <li><a href="/#beneficios" className="hover:text-white">Beneficios</a></li>
-              <li><a href="/#red" className="hover:text-white">Nuestra red</a></li>
-              <li><a href="/#preguntas" className="hover:text-white">Preguntas frecuentes</a></li>
+              {business ? (
+                <>
+                  <li><a href="/#como-funciona" className="hover:text-white">Cómo funciona</a></li>
+                  <li><a href="/#preguntas-comerciales" className="hover:text-white">Preguntas comerciales</a></li>
+                  <li><a href="/#contacto-comercial" className="hover:text-white">Contacto</a></li>
+                </>
+              ) : (
+                <>
+                  <li><a href="/#beneficios" className="hover:text-white">Beneficios</a></li>
+                  <li><a href="/#red" className="hover:text-white">Nuestra red</a></li>
+                  <li><a href="/#preguntas" className="hover:text-white">Preguntas frecuentes</a></li>
+                </>
+              )}
             </ul>
           </div>
           <div>
             <p className="text-white font-semibold mb-3">Empresa</p>
             <ul className="space-y-2">
               <li><a href="/privacidad.html" className="hover:text-white">Política de privacidad</a></li>
-              <li><a href="/gasolineras" className="hover:text-white">Para gasolineras</a></li>
-              <li><Link to="/admin/login" className="hover:text-white">Acceso administrativo</Link></li>
+              {business ? (
+                <li><a href="https://enerpetrol-web-eta.vercel.app/" className="hover:text-white">Sitio institucional</a></li>
+              ) : (
+                <>
+                  <li><a href="/gasolineras" className="hover:text-white">Para gasolineras</a></li>
+                  <li><Link to="/admin/login" className="hover:text-white">Acceso administrativo</Link></li>
+                </>
+              )}
             </ul>
           </div>
         </div>

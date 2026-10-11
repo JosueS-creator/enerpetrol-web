@@ -1,5 +1,6 @@
 node_modules
 dist
+dist-business
 .env
 .env.local
 .DS_Store
