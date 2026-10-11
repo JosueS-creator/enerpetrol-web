@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './pages/Landing'
 import AdminLogin from './pages/AdminLogin'
@@ -16,11 +17,21 @@ import Banners from './pages/admin/Banners'
 import Reportes from './pages/admin/Reportes'
 import ProtectedRoute from './components/ProtectedRoute'
 
+const Gasolineras = lazy(() => import('./pages/Gasolineras'))
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route
+          path="/gasolineras"
+          element={
+            <Suspense fallback={<main role="status" className="min-h-screen bg-navy-ink px-6 pt-32 text-center text-white">Cargando la sección comercial…</main>}>
+              <Gasolineras />
+            </Suspense>
+          }
+        />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/actualizar-password" element={<AdminActualizarPassword />} />
         <Route

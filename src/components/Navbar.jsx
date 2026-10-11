@@ -5,10 +5,10 @@ import LogoMark from './LogoMark'
 const APP_URL = 'https://enerpetrol-app.vercel.app'
 
 const LINKS = [
-  { href: '#app', label: 'La app' },
-  { href: '#beneficios', label: 'Beneficios' },
-  { href: '#red', label: 'Nuestra red' },
-  { href: '#preguntas', label: 'Preguntas' },
+  { href: '/#app', label: 'La app' },
+  { href: '/#beneficios', label: 'Beneficios' },
+  { href: '/#red', label: 'Nuestra red' },
+  { href: '/#preguntas', label: 'Preguntas' },
 ]
 
 export default function Navbar() {
@@ -28,7 +28,7 @@ export default function Navbar() {
       }`}
     >
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-        <a href="#top" className="flex items-center gap-2 text-white font-display text-xl tracking-wide">
+        <a href="/#top" className="flex items-center gap-2 text-white font-display text-xl tracking-wide">
           <LogoMark size={22} />
           ENERPETROL
         </a>
@@ -39,6 +39,9 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
+          <a href="/gasolineras" className="text-white/80 hover:text-white text-sm font-semibold transition-colors">
+            Para gasolineras
+          </a>
           <a
             href={APP_URL}
             target="_blank"
@@ -49,18 +52,21 @@ export default function Navbar() {
           </a>
         </div>
 
-        <button className="md:hidden text-white" onClick={() => setOpen(!open)} aria-label="Menú">
+        <button className="md:hidden text-white" onClick={() => setOpen(!open)} aria-label={open ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={open} aria-controls="mobile-navigation">
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
 
       {open && (
-        <div className="md:hidden bg-navy-ink px-6 pb-6 flex flex-col gap-4">
+        <div id="mobile-navigation" className="md:hidden bg-navy-ink px-6 pb-6 flex flex-col gap-4">
           {LINKS.map((l) => (
             <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="text-white/80 text-sm font-medium">
               {l.label}
             </a>
           ))}
+          <a href="/gasolineras" onClick={() => setOpen(false)} className="text-white/80 text-sm font-semibold">
+            Para gasolineras
+          </a>
           <a
             href={APP_URL}
             target="_blank"

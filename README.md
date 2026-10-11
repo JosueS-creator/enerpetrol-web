@@ -89,3 +89,18 @@ contraseña para entrar al panel web — es la misma base de usuarios.
 - El panel admin web tiene permisos más amplios que el móvil (gestión completa
   de estaciones y eliminación de facturas). Ambos comparten la misma
   autenticación y base de datos.
+
+## Página comercial para gasolineras
+
+- La página pública está disponible en `/gasolineras` y usa el WhatsApp
+  publicado en `public/privacidad.html` como canal de contacto.
+- El formulario valida los datos en el navegador y prepara un mensaje de
+  WhatsApp. Al abrir el enlace, WhatsApp recibe el texto para preparar el chat;
+  el visitante debe revisar el mensaje y enviarlo desde WhatsApp para que
+  Enerpetrol reciba la solicitud.
+- El sitio no guarda ni envía solicitudes a Supabase; en el código existente no
+  se identificó una tabla de prospectos ni un endpoint comercial. La pantalla
+  no confirma una solicitud como recibida.
+- Si se requiere almacenamiento automático, primero habrá que definir el
+  destino comercial y una vía de inserción segura con las políticas RLS
+  correspondientes. No se requiere ni se expone una clave `service_role`.
