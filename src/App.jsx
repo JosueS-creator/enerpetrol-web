@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './pages/Landing'
+import RegistroTarjeta from './pages/RegistroTarjeta'
+import TarjetasFisicas from './pages/admin/TarjetasFisicas'
 import AdminLogin from './pages/AdminLogin'
 import AdminActualizarPassword from './pages/AdminActualizarPassword'
 import AdminLayout from './pages/admin/AdminLayout'
@@ -24,6 +26,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/tarjeta-fisica" element={<RegistroTarjeta />} />
         <Route
           path="/gasolineras"
           element={
@@ -53,6 +56,7 @@ export default function App() {
           <Route path="comentarios" element={<Comentarios />} />
           <Route path="banners" element={<Banners />} />
           <Route path="reportes" element={<Reportes />} />
+          <Route path="tarjetas-fisicas" element={<TarjetasFisicas />} />
         </Route>
       </Routes>
     </BrowserRouter>
