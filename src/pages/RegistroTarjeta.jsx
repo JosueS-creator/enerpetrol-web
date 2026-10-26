@@ -85,7 +85,7 @@ export default function RegistroTarjeta() {
           <div aria-hidden="true" className="absolute -left-[9999px]"><label>Sitio web<input tabIndex={-1} autoComplete="off" value={website} onChange={e=>setWebsite(e.target.value)}/></label></div>
           <label className="flex items-start gap-3 text-sm text-slate-700">
             <input type="checkbox" checked={consentimiento} onChange={e=>setConsentimiento(e.target.checked)} className="mt-1 h-5 w-5"/>
-            <span>Autorizo el tratamiento de mis datos para gestionar la solicitud de tarjeta física y su comunicación al operador responsable de emitirla, conforme al <a href="/privacidad.html" target="_blank" rel="noreferrer" className="text-emerald-700 underline">aviso de privacidad</a>.</span>
+            <span>Autorizo a Enerpetrol a tratar mi nombre, identidad y datos del vehículo para gestionar mi solicitud de tarjeta física y a compartirlos con Vedeppesa para su emisión, conforme al <a href="/privacidad.html" target="_blank" rel="noreferrer" className="text-emerald-700 underline">aviso de privacidad</a>.</span>
           </label>
           {!REGISTRO_ACTIVO && <div role="status" className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-amber-900 text-sm">Registro próximamente disponible. Pendiente de activar el consentimiento legal y las protecciones contra abuso.</div>}
           {REGISTRO_ACTIVO && <div ref={captchaRef} aria-label="Verificación de seguridad" />}
