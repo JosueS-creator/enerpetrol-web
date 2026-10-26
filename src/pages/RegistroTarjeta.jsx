@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CreditCard, Fuel, ShieldCheck } from 'lucide-react'
 import LogoMark from '../components/LogoMark'
 import { supabase } from '../lib/supabase'
-const REGISTRO_ACTIVO = import.meta.env.VITE_TARJETA_REGISTRO_ACTIVO === 'true'
+const SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
+const REGISTRO_ACTIVO = import.meta.env.VITE_TARJETA_REGISTRO_ACTIVO === 'true' && Boolean(SITE_KEY)
 
 const estaciones = [
   { ciudad: 'Tegucigalpa', nombre: 'Texaco Triángulo' },
@@ -16,19 +17,41 @@ export default function RegistroTarjeta() {
   const [datos, setDatos] = useState({ nombre: '', identidad: '', vehiculo: '', placa: '', estacion: '' })
   const [consentimiento, setConsentimiento] = useState(false)
   const [website, setWebsite] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const captchaRef = useRef(null)
+  useEffect(() => {
+    if (!REGISTRO_ACTIVO || !captchaRef.current) return
+    let widgetId
+    const render = () => {
+      if (!window.turnstile || !captchaRef.current || widgetId !== undefined) return
+      widgetId = window.turnstile.render(captchaRef.current, {
+        sitekey: SITE_KEY,
+        callback: token => setTurnstileToken(token),
+        'expired-callback': () => setTurnstileToken(''),
+        'error-callback': () => setTurnstileToken(''),
+      })
+    }
+    const script = document.createElement('script')
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+    script.async = true
+    script.onload = render
+    document.head.appendChild(script)
+    render()
+    return () => { if (widgetId !== undefined && window.turnstile) window.turnstile.remove(widgetId); script.remove() }
+  }, [])
   const [enviando, setEnviando] = useState(false)
   const [mensaje, setMensaje] = useState('')
   const [exito, setExito] = useState(false)
   async function enviar(e) {
     e.preventDefault()
-    if (!REGISTRO_ACTIVO || enviando || !consentimiento) return
+    if (!REGISTRO_ACTIVO || enviando || !consentimiento || !turnstileToken) return
     setEnviando(true); setMensaje('')
     try {
-      const { data, error } = await supabase.functions.invoke('solicitar-tarjeta-fisica', { body: { ...datos, consentimiento, website } })
+      const { data, error } = await supabase.functions.invoke('solicitar-tarjeta-fisica', { body: { ...datos, consentimiento, website, turnstileToken, origen: 'web' } })
       if (error || !data?.ok) throw new Error(data?.error || 'No se pudo enviar la solicitud')
-      setExito(true); setMensaje('Solicitud recibida. Te contactaremos según el proceso de emisión de tarjetas.')
+      setTurnstileToken(''); setExito(true); setMensaje('Solicitud recibida. Te contactaremos según el proceso de emisión de tarjetas.')
     } catch (err) { setMensaje(err.message || 'Error al enviar la solicitud') }
-    finally { setEnviando(false) }
+    finally { setEnviando(false); if (!exito && window.turnstile && captchaRef.current) { try { window.turnstile.reset() } catch {} } }
   }
   const set = (k, v) => setDatos(d => ({ ...d, [k]: v }))
   return <main className="min-h-screen bg-navy-ink text-white px-5 py-10">
@@ -65,8 +88,9 @@ export default function RegistroTarjeta() {
             <span>Autorizo el tratamiento de mis datos para gestionar la solicitud de tarjeta física y su comunicación al operador responsable de emitirla, conforme al <a href="/privacidad.html" target="_blank" rel="noreferrer" className="text-emerald-700 underline">aviso de privacidad</a>.</span>
           </label>
           {!REGISTRO_ACTIVO && <div role="status" className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-amber-900 text-sm">Registro próximamente disponible. Pendiente de activar el consentimiento legal y las protecciones contra abuso.</div>}
+          {REGISTRO_ACTIVO && <div ref={captchaRef} aria-label="Verificación de seguridad" />}
           {mensaje && <p role="status" className={exito ? "text-emerald-700" : "text-red-700"}>{mensaje}</p>}
-          <button type="submit" disabled={!REGISTRO_ACTIVO || !consentimiento || enviando || exito} className="w-full rounded-xl bg-emerald-700 text-white font-bold py-4 disabled:bg-slate-400 disabled:cursor-not-allowed">{exito ? "Solicitud enviada" : enviando ? "Enviando…" : REGISTRO_ACTIVO ? "Solicitar tarjeta física" : "Registro próximamente disponible"}</button>
+          <button type="submit" disabled={!REGISTRO_ACTIVO || !consentimiento || !turnstileToken || enviando || exito} className="w-full rounded-xl bg-emerald-700 text-white font-bold py-4 disabled:bg-slate-400 disabled:cursor-not-allowed">{exito ? "Solicitud enviada" : enviando ? "Enviando…" : REGISTRO_ACTIVO ? "Solicitar tarjeta física" : "Registro próximamente disponible"}</button>
         </form>
       </section>
       <p className="text-center text-white/60 text-sm mt-6 flex justify-center gap-2 items-center"><ShieldCheck size={16}/> Tu información requiere tratamiento protegido.</p>
