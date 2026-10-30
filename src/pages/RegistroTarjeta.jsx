@@ -5,6 +5,7 @@ import LogoMark from '../components/LogoMark'
 import { supabase } from '../lib/supabase'
 const SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || ''
 const REGISTRO_ACTIVO = import.meta.env.VITE_TARJETA_REGISTRO_ACTIVO === 'true' && Boolean(SITE_KEY)
+const TURNSTILE_SCRIPT_ID = 'cf-turnstile-api'
 
 const estaciones = [
   { ciudad: 'Tegucigalpa', nombre: 'Texaco Triángulo' },
@@ -18,40 +19,71 @@ export default function RegistroTarjeta() {
   const [consentimiento, setConsentimiento] = useState(false)
   const [website, setWebsite] = useState('')
   const [turnstileToken, setTurnstileToken] = useState('')
-  const captchaRef = useRef(null)
-  useEffect(() => {
-    if (!REGISTRO_ACTIVO || !captchaRef.current) return
-    let widgetId
-    const render = () => {
-      if (!window.turnstile || !captchaRef.current || widgetId !== undefined) return
-      widgetId = window.turnstile.render(captchaRef.current, {
-        sitekey: SITE_KEY,
-        callback: token => setTurnstileToken(token),
-        'expired-callback': () => setTurnstileToken(''),
-        'error-callback': () => setTurnstileToken(''),
-      })
-    }
-    const script = document.createElement('script')
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
-    script.async = true
-    script.onload = render
-    document.head.appendChild(script)
-    render()
-    return () => { if (widgetId !== undefined && window.turnstile) window.turnstile.remove(widgetId); script.remove() }
-  }, [])
   const [enviando, setEnviando] = useState(false)
   const [mensaje, setMensaje] = useState('')
   const [exito, setExito] = useState(false)
+  const captchaRef = useRef(null)
+  const widgetIdRef = useRef(undefined)
+  const enviandoRef = useRef(false)
+
+  useEffect(() => {
+    if (!REGISTRO_ACTIVO || !captchaRef.current) return
+    const render = () => {
+      if (!window.turnstile || !captchaRef.current || widgetIdRef.current !== undefined) return
+      widgetIdRef.current = window.turnstile.render(captchaRef.current, {
+        sitekey: SITE_KEY,
+        callback: token => { setTurnstileToken(token); setMensaje('') },
+        'expired-callback': () => setTurnstileToken(''),
+        'error-callback': () => {
+          setTurnstileToken('')
+          setMensaje('No se pudo completar la verificación de seguridad. Espera un momento e inténtalo de nuevo.')
+        },
+      })
+    }
+    // Reutiliza el script si ya existe: evita cargar api.js más de una vez
+    let script = document.getElementById(TURNSTILE_SCRIPT_ID)
+    if (!script) {
+      script = document.createElement('script')
+      script.id = TURNSTILE_SCRIPT_ID
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+      script.async = true
+      document.head.appendChild(script)
+    }
+    script.addEventListener('load', render)
+    render()
+    return () => {
+      script.removeEventListener('load', render)
+      if (widgetIdRef.current !== undefined && window.turnstile) {
+        try { window.turnstile.remove(widgetIdRef.current) } catch {}
+      }
+      widgetIdRef.current = undefined
+    }
+  }, [])
+
   async function enviar(e) {
     e.preventDefault()
-    if (!REGISTRO_ACTIVO || enviando || !consentimiento || !turnstileToken) return
+    if (!REGISTRO_ACTIVO || enviandoRef.current || exito || !consentimiento || !turnstileToken) return
+    // El backend exige exactamente 13 dígitos: se aceptan guiones/espacios y se normaliza
+    const identidadLimpia = datos.identidad.replace(/\D/g, '')
+    if (identidadLimpia.length !== 13) { setMensaje('El número de identidad debe tener 13 dígitos.'); return }
+    enviandoRef.current = true
     setEnviando(true); setMensaje('')
     try {
-      const { data, error } = await supabase.functions.invoke('solicitar-tarjeta-fisica', { body: { ...datos, consentimiento, website, turnstileToken, origen: 'web' } })
-      if (error || !data?.ok) throw new Error(data?.error || 'No se pudo enviar la solicitud')
+      const { data, error } = await supabase.functions.invoke('solicitar-tarjeta-fisica', { body: { ...datos, identidad: identidadLimpia, consentimiento, website, turnstileToken, origen: 'web' } })
+      // En respuestas no-2xx supabase-js devuelve data=null; el cuerpo está en error.context
+      let respuesta = data
+      if (error) { try { respuesta = await error.context.json() } catch {} }
+      if (error || !respuesta?.ok) throw new Error(respuesta?.error || 'No se pudo enviar la solicitud')
       setTurnstileToken(''); setExito(true); setMensaje('Solicitud recibida. Te contactaremos según el proceso de emisión de tarjetas.')
-    } catch (err) { setMensaje(err.message || 'Error al enviar la solicitud') }
-    finally { setEnviando(false); if (!exito && window.turnstile && captchaRef.current) { try { window.turnstile.reset() } catch {} } }
+    } catch (err) {
+      setMensaje(err.message || 'Error al enviar la solicitud')
+      // El token es de un solo uso: se invalida y se pide uno nuevo
+      setTurnstileToken('')
+      try { if (window.turnstile && widgetIdRef.current !== undefined) window.turnstile.reset(widgetIdRef.current) } catch {}
+    } finally {
+      enviandoRef.current = false
+      setEnviando(false)
+    }
   }
   const set = (k, v) => setDatos(d => ({ ...d, [k]: v }))
   return <main className="min-h-screen bg-navy-ink text-white px-5 py-10">
