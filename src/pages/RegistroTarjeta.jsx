@@ -15,7 +15,7 @@ const estaciones = [
   { ciudad: 'Siguatepeque', nombre: 'Uno Zaragoza' },
 ]
 export default function RegistroTarjeta() {
-  const [datos, setDatos] = useState({ nombre: '', identidad: '', vehiculo: '', placa: '', estacion: '' })
+  const [datos, setDatos] = useState({ nombre: '', identidad: '', telefono: '', vehiculo: '', placa: '', estacion: '' })
   const [consentimiento, setConsentimiento] = useState(false)
   const [website, setWebsite] = useState('')
   const [turnstileToken, setTurnstileToken] = useState('')
@@ -65,11 +65,13 @@ export default function RegistroTarjeta() {
     if (!REGISTRO_ACTIVO || enviandoRef.current || exito || !consentimiento || !turnstileToken) return
     // El backend exige exactamente 13 dígitos: se aceptan guiones/espacios y se normaliza
     const identidadLimpia = datos.identidad.replace(/\D/g, '')
+    const telefonoLimpio = datos.telefono.replace(/\D/g, '')
     if (identidadLimpia.length !== 13) { setMensaje('El número de identidad debe tener 13 dígitos.'); return }
+    if (!/^[2389][0-9]{7}$/.test(telefonoLimpio)) { setMensaje('Ingresa un número hondureño válido de 8 dígitos.'); return }
     enviandoRef.current = true
     setEnviando(true); setMensaje('')
     try {
-      const { data, error } = await supabase.functions.invoke('solicitar-tarjeta-fisica', { body: { ...datos, identidad: identidadLimpia, consentimiento, website, turnstileToken, origen: 'web' } })
+      const { data, error } = await supabase.functions.invoke('solicitar-tarjeta-fisica', { body: { ...datos, identidad: identidadLimpia, telefono: telefonoLimpio, consentimiento, website, turnstileToken, origen: 'web' } })
       // En respuestas no-2xx supabase-js devuelve data=null; el cuerpo está en error.context
       let respuesta = data
       if (error) { try { respuesta = await error.context.json() } catch {} }
@@ -107,6 +109,13 @@ export default function RegistroTarjeta() {
           ].map(([key,label,type,placeholder])=><label key={key} className="block text-sm font-semibold">{label}
             <input type={type} autoComplete="off" value={datos[key]} onChange={e=>set(key,e.target.value)} placeholder={placeholder} required maxLength={90} className="mt-2 w-full border border-slate-300 rounded-xl p-3 min-h-12 focus:outline-none focus:ring-2 focus:ring-emerald-600"/>
           </label>)}
+          <label className="block text-sm font-semibold">Teléfono de contacto
+            <div className="mt-2 flex">
+              <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-slate-300 bg-slate-100 text-slate-700">+504</span>
+              <input type="tel" inputMode="numeric" autoComplete="tel-national" value={datos.telefono} onChange={e=>set('telefono',e.target.value.replace(/[^0-9]/g,'').slice(0,8))} placeholder="0000-0000" required maxLength={8} pattern="[2389][0-9]{7}" title="Ingresa un número hondureño de 8 dígitos" className="w-full border border-slate-300 rounded-r-xl p-3 min-h-12 focus:outline-none focus:ring-2 focus:ring-emerald-600"/>
+            </div>
+            <span className="mt-1 block text-xs font-normal text-slate-500">Lo utilizaremos para coordinar la entrega de tu tarjeta.</span>
+          </label>
           <label className="block text-sm font-semibold">Estación de preferencia
             <select required value={datos.estacion} onChange={e=>set('estacion',e.target.value)} className="mt-2 w-full border border-slate-300 rounded-xl p-3 min-h-12 bg-white">
               <option value="">Selecciona una estación</option>
@@ -117,7 +126,7 @@ export default function RegistroTarjeta() {
           <div aria-hidden="true" className="absolute -left-[9999px]"><label>Sitio web<input tabIndex={-1} autoComplete="off" value={website} onChange={e=>setWebsite(e.target.value)}/></label></div>
           <label className="flex items-start gap-3 text-sm text-slate-700">
             <input type="checkbox" checked={consentimiento} onChange={e=>setConsentimiento(e.target.checked)} className="mt-1 h-5 w-5"/>
-            <span>Autorizo a Enerpetrol a tratar mi nombre, identidad y datos del vehículo para gestionar mi solicitud de tarjeta física y a compartirlos con Vedeppesa para su emisión, conforme al <a href="/privacidad.html" target="_blank" rel="noreferrer" className="text-emerald-700 underline">aviso de privacidad</a>.</span>
+            <span>Autorizo a Enerpetrol a tratar mi nombre, identidad, teléfono de contacto y datos del vehículo para gestionar mi solicitud de tarjeta física y a compartirlos con Vedeppesa para su emisión, conforme al <a href="/privacidad.html" target="_blank" rel="noreferrer" className="text-emerald-700 underline">aviso de privacidad</a>.</span>
           </label>
           {!REGISTRO_ACTIVO && <div role="status" className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-amber-900 text-sm">Registro próximamente disponible. Pendiente de activar el consentimiento legal y las protecciones contra abuso.</div>}
           {REGISTRO_ACTIVO && <div ref={captchaRef} aria-label="Verificación de seguridad" />}
