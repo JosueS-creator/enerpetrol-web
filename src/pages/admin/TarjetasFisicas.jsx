@@ -12,7 +12,7 @@ export default function TarjetasFisicas() {
     let activo = true
     async function cargar() {
       const { data, error } = await supabase.from('solicitudes_tarjeta_fisica')
-        .select('id,nombre,identidad,vehiculo,placa,estacion,estado,creado_en,origen,consentimiento_version,consentimiento_fecha')
+        .select('id,nombre,identidad,telefono,vehiculo,placa,estacion,estado,creado_en,origen,consentimiento_version,consentimiento_fecha')
         .order('creado_en', { ascending: false }).limit(1000)
       if (!activo) return
       if (error) setError('No fue posible consultar las solicitudes: ' + error.message)
@@ -34,7 +34,7 @@ export default function TarjetasFisicas() {
       })
       if (auditError) throw new Error('No se pudo registrar la auditoría de descarga')
       const filas = solicitudes.map(s => ({
-        'Fecha': s.creado_en, 'Nombre completo': s.nombre, 'Identidad': s.identidad,
+        'Fecha': s.creado_en, 'Nombre completo': s.nombre, 'Identidad': s.identidad, 'Teléfono': s.telefono ? '+504 ' + s.telefono : '',
         'Vehículo': s.vehiculo, 'Placa': s.placa, 'Estación': s.estacion,
         'Estado': s.estado, 'Origen': s.origen, 'Consentimiento': s.consentimiento_version,
         'Fecha de consentimiento': s.consentimiento_fecha,
@@ -58,8 +58,8 @@ export default function TarjetasFisicas() {
       </div>
       {error && <p role="alert" className="text-red-700 mt-4">{error}</p>}
       <div className="overflow-x-auto mt-6"><table className="w-full text-left text-sm">
-        <thead><tr className="border-b">{['Fecha','Nombre','Identidad','Vehículo','Placa','Estación','Estado'].map(h=><th className="p-3" key={h}>{h}</th>)}</tr></thead>
-        <tbody>{solicitudes.map(s=><tr key={s.id} className="border-b border-slate-100">{[new Date(s.creado_en).toLocaleDateString('es-HN'),s.nombre,s.identidad,s.vehiculo,s.placa,s.estacion,s.estado].map((v,i)=><td className="p-3" key={i}>{v}</td>)}</tr>)}</tbody>
+        <thead><tr className="border-b">{['Fecha','Nombre','Identidad','Teléfono','Vehículo','Placa','Estación','Estado'].map(h=><th className="p-3" key={h}>{h}</th>)}</tr></thead>
+        <tbody>{solicitudes.map(s=><tr key={s.id} className="border-b border-slate-100">{[new Date(s.creado_en).toLocaleDateString('es-HN'),s.nombre,s.identidad,s.telefono ? '+504 ' + s.telefono : '—',s.vehiculo,s.placa,s.estacion,s.estado].map((v,i)=><td className="p-3" key={i}>{v}</td>)}</tr>)}</tbody>
       </table></div>
     </section>
   </div>
